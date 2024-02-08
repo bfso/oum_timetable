@@ -55,7 +55,7 @@ fun LoginScreen() {
                 }
                 Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
                     Button(
-                        onClick = { TODO() },
+                        onClick = {  },
                     ) {
                         Text(text = "Login")
                     }
