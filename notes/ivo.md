@@ -18,3 +18,10 @@
 * Die Matchdaten zum gewählten Spieltag werden zu beginn alle geladen
     * ausgenommen sind die Spielerbilder
     * Spielerbilder können auf knopfdruck vorgeladen werden
+
+## Anforderungen für Schnittstellen
+
+* # GET
+  * 
+* # POST
+  * 

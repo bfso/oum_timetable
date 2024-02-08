@@ -1,6 +1,7 @@
 package org.oum_timetable.project
 
 import App
+import LoginScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,7 +13,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            App()
+            //App()
+            LoginScreen()
         }
     }
 }

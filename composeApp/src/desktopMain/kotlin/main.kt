@@ -5,7 +5,8 @@ import androidx.compose.ui.window.application
 
 fun main() = application {
     Window(onCloseRequest = ::exitApplication, title = "oum_timetable") {
-        App()
+        //App()
+        LoginScreen()
     }
 }
 
@@ -13,4 +14,10 @@ fun main() = application {
 @Composable
 fun AppDesktopPreview() {
     App()
+}
+
+@Preview
+@Composable
+fun DesktopLoginPreview() {
+    LoginScreen()
 }
