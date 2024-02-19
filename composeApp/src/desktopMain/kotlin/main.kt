@@ -5,12 +5,11 @@ import androidx.compose.ui.window.application
 import data.Match
 import data.Team
 import screens.ChooseTeamScreen
+import screens.TeamOverviewScreen
 
 fun main() = application {
     Window(onCloseRequest = ::exitApplication, title = "oum_timetable") {
-        //App()
-        //LoginScreen()
-        ChooseTeamScreen(Match(Team("Team1", arrayOf()),Team("Team2", arrayOf()))).Content()
+        App()
     }
 }
 
