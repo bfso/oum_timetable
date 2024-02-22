@@ -1,5 +1,6 @@
 package screens
 
+import AppViewModel
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,12 +21,22 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 
-class LoginScreen:Screen {
+class LoginScreen(
+    val appViewModel: AppViewModel
+) : Screen {
+
+
     @Composable
     override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+
+
         var username by remember { mutableStateOf("") }
         var password by remember { mutableStateOf("") }
+
 
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Box(modifier = Modifier) {
@@ -57,7 +68,14 @@ class LoginScreen:Screen {
                     }
                     Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
                         Button(
-                            onClick = { TODO() },
+                            onClick = {
+                                try {
+                                    validateLoginData()
+                                    navigator.push(HomeScreen(appViewModel = appViewModel))
+                                } catch (_: Exception) {
+
+                                }
+                            },
                         ) {
                             Text(text = "Login")
                         }
@@ -65,5 +83,9 @@ class LoginScreen:Screen {
                 }
             }
         }
+    }
+
+    private fun validateLoginData() {
+
     }
 }

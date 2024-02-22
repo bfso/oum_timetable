@@ -10,6 +10,4 @@ data class Player(
     val licenceNumber: Int = -1,
     val image: ImageVector? = null,
     val present: Present = Present.NONE
-
-
 )
