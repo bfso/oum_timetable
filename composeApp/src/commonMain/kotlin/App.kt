@@ -12,8 +12,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import data.Match
+import data.Team
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
+import screens.Playmanager
 import screens.TeamOverviewScreen
 
 @OptIn(ExperimentalResourceApi::class)
@@ -21,7 +24,7 @@ import screens.TeamOverviewScreen
 fun App() {
     MaterialTheme {
         val viewModel = AppViewModel()
-        TeamOverviewScreen(viewModel).Content()
+        Playmanager(Match(Team(name = "Team Ivo"),Team(name = "loser Team"))).Content()
         //var showContent by remember { mutableStateOf(false) }
         //val greeting = remember { Greeting().greet() }
         //Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
