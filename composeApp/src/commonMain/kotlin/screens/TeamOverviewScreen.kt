@@ -22,14 +22,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import data.Player
 
 class TeamOverviewScreen (val appViewModel: AppViewModel):Screen{
     @Composable
     override fun Content() {
-        Box (
+        val navigator = LocalNavigator.currentOrThrow
+        ScreenWithKeyInput (
+            keyEvents = mapOf(
+                Pair(Key.Escape){navigator.pop()}
+            ),
             modifier = Modifier.fillMaxSize()
         ){
             LazyVerticalGrid(
@@ -41,8 +48,6 @@ class TeamOverviewScreen (val appViewModel: AppViewModel):Screen{
                 items(appViewModel.data.matches[0].team1.members){
                     PlayerCard(player = it)
                 }
-
-
             }
         }
     }

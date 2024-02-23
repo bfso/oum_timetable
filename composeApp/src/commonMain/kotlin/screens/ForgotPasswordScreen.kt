@@ -19,6 +19,8 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.pointer.PointerIcon
+import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
@@ -33,36 +35,29 @@ class ForgotPasswordScreen : Screen {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         var test by remember { mutableStateOf("No Button Pressed") }
-        val requester = remember { FocusRequester() }
-        Column(
-            modifier = Modifier
-                .focusable()
-                .focusRequester(requester)
-                .fillMaxSize()
-                .onKeyEvent {
-                    when (it.key){
-                        //Key.Escape->{ navigator.pop()}
-                        Key.Enter ->{
-                            test = "Enter Button Pressed"
-                        true}
-                        else -> {false}
-                    }
-                },
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(30.dp)
+        ScreenWithKeyInput(
+            keyEvents = mapOf(
+                Pair(Key.Escape) { navigator.pop() },
+                Pair(Key.Spacebar){
+                    test = "Spacebar Pressed"
+                    true}
+            )
         ) {
-            Text(text = "Forgot Password Screen", fontSize = 50.sp)
-            Button(onClick = {
-                navigator.pop()
-            }) {
-                Text(text = "Back")
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(30.dp)
+            ) {
+                Text(text = "Forgot Password Screen", fontSize = 50.sp)
+                Button(
+                    modifier = Modifier.pointerHoverIcon(icon = PointerIcon.Hand),
+                    onClick = {
+                    navigator.pop()
+                }) {
+                    Text(text = "Back")
+                }
+                Text(text = test)
             }
-            Text(text = test)
-        }
-
-
-        LaunchedEffect(Unit) {
-            requester.requestFocus()
         }
     }
 

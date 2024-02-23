@@ -2,13 +2,13 @@ package screens
 
 import AppViewModel
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.onClick
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.text.style.TextDecoration
@@ -27,8 +28,8 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
-
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 
 class LoginScreen(
@@ -47,9 +48,20 @@ class LoginScreen(
 
         var username by remember { mutableStateOf("") }
         var password by remember { mutableStateOf("") }
-
-
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        ScreenWithKeyInput(
+            keyEvents = mapOf(
+                Pair(Key.Enter){
+                    try {
+                        validateLoginData(navigator)
+                        true
+                    }catch (_:Exception){
+                        false
+                    }
+                }
+            ),
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
             Box(modifier = Modifier) {
                 Column(
                     modifier = Modifier.fillMaxWidth(0.4f),
@@ -81,17 +93,17 @@ class LoginScreen(
                                     icon = PointerIcon.Hand,
                                     overrideDescendants = true
                                 )
-                                .onClick{
+                                .clickable{
                                     navigator.push(ForgotPasswordScreen())
                                 }
                         )
                     }
                     Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
                         Button(
+                            modifier = Modifier.pointerHoverIcon(icon = PointerIcon.Hand),
                             onClick = {
                                 try {
-                                    validateLoginData()
-                                    navigator.push(HomeScreen(appViewModel = appViewModel))
+                                    validateLoginData(navigator)
                                 } catch (_: Exception) {
 
                                 }
@@ -105,7 +117,7 @@ class LoginScreen(
         }
     }
 
-    private fun validateLoginData() {
-
+    private fun validateLoginData(navigator:Navigator) {
+        navigator.push(HomeScreen(appViewModel = appViewModel))
     }
 }

@@ -25,38 +25,39 @@ import screens.LoginScreen
 fun App() {
     MaterialTheme {
         val appViewModel = AppViewModel()
-        var alertBox by remember { mutableStateOf(false) }
+        //var alertBox by remember { mutableStateOf(false) }
         Scaffold (
             modifier = Modifier
-                .focusable()
-                .focusRequester(FocusRequester())
-                .onKeyEvent {
-                when (it.key){
-                    //Key.Escape->{ navigator.pop()}
-                    Key.Enter ->{
-                        alertBox = true
-                        true}
-                    else -> {false}
-                }
-            }
+                //.focusable()
+                //.focusRequester(FocusRequester())
+                //.onKeyEvent {
+                //when (it.key){
+                //    //Key.Escape->{ navigator.pop()}
+                //    Key.Enter ->{
+                //        alertBox = true
+                //        true}
+                //    else -> {false}
+                //    }
+                //}
         ){
-            if (alertBox){
-                AlertDialog(
-                    onDismissRequest = {alertBox = false},
-                    confirmButton = {
-                        Button(
-                            onClick = {alertBox = false}
-                        ){
-                            Text(text = "OK")
-                        }
+            //if (alertBox){
+            //    AlertDialog(
+            //        onDismissRequest = {alertBox = false},
+            //        confirmButton = {
+            //            Button(
+            //                onClick = {alertBox = false}
+            //            ){
+            //                Text(text = "OK")
+            //            }
 
-                                    },
-                    text = { Text(text = "Enter was pressed") }
-                )
-            }
-            Navigator(screen = LoginScreen(appViewModel)) {
-                SlideTransition(it)
-            }
+            //                        },
+            //        text = { Text(text = "Enter was pressed") }
+            //    )
+            //}
+            Navigator(screen = LoginScreen(appViewModel))
+            //{
+            //    SlideTransition(it)
+            //}
         }
 
         //var showContent by remember { mutableStateOf(false) }
