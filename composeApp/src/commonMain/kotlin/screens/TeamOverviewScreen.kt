@@ -1,7 +1,6 @@
 package screens
 
 import AppViewModel
-import DropdownMenu
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,9 +14,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.DropdownMenu
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
+
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -86,10 +87,6 @@ class TeamOverviewScreen (val appViewModel: AppViewModel):Screen{
                         Text(text = player.firstName)
                         Text(text = player.playerNumber.toString())
                         Text(text = player.licenceNumber.toString())
-                        DropdownMenu(
-                            options = listOf(),
-                            onChange = {}
-                        )
                     }
                     Image(imageVector = Icons.Filled.AccountBox, contentDescription = "")
                 }

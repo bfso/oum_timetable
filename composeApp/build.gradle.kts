@@ -77,6 +77,7 @@ android {
 }
 dependencies {
     implementation(libs.mobile.multiplatform)
+    implementation(libs.androidx.material3.android)
 
 }
 

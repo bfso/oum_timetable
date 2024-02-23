@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
+import screens.HomeScreen
 import screens.TeamOverviewScreen
 
 @OptIn(ExperimentalResourceApi::class)
@@ -21,7 +22,7 @@ import screens.TeamOverviewScreen
 fun App() {
     MaterialTheme {
         val viewModel = AppViewModel()
-        TeamOverviewScreen(viewModel).Content()
+        HomeScreen().Content()
         //var showContent by remember { mutableStateOf(false) }
         //val greeting = remember { Greeting().greet() }
         //Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
