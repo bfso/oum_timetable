@@ -15,26 +15,32 @@ kotlin {
             }
         }
     }
-    
+
     jvm("desktop")
-    
+
     sourceSets {
         val desktopMain by getting
-        
+
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
         }
         commonMain.dependencies {
+            @OptIn(ExperimentalComposeLibrary::class)
+            implementation(compose.components.resources)
+            implementation(libs.mobile.multiplatform)
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
             implementation(compose.ui)
-            implementation(libs.voyager.navigator)
             implementation(libs.voyager.tab.navigator)
+            implementation(libs.voyager.navigator)
+            implementation(libs.voyager.screenmodel)
             implementation(libs.voyager.transitions)
-            @OptIn(ExperimentalComposeLibrary::class)
-            implementation(compose.components.resources)
+            implementation(libs.voyager.koin)
+            implementation(libs.voyager.kodein)
+            implementation(libs.voyager.bottom.sheet.navigator)
+
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -78,7 +84,6 @@ android {
 dependencies {
     implementation(libs.mobile.multiplatform)
     implementation(libs.voyager.screenmodel)
-
 }
 
 compose.desktop {
