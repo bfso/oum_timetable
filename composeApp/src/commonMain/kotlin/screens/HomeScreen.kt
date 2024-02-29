@@ -11,29 +11,23 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
-import androidx.compose.material.ButtonColors
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.key.Key.Companion.R
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import data.Match
 import data.Team
-import javax.swing.SpinnerListModel
 
 class HomeScreen (
     val appViewModel: AppViewModel
@@ -42,6 +36,8 @@ class HomeScreen (
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         var showAlertBox by remember { mutableStateOf(false) }
+        var showAlertBoxMatch by remember { mutableStateOf( false ) }
+        var teamCheckDone by remember { mutableStateOf( false ) }
 
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Box(modifier = Modifier) {
@@ -64,6 +60,31 @@ class HomeScreen (
                         },
                         title = { Text(text = "Error", modifier = Modifier.fillMaxWidth() , textAlign = TextAlign.Center)  },
                         text = { Text(text = "Choose a Match", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center) },
+                        contentColor = Color.Red,
+                        modifier = Modifier.size(width = 300.dp, height = 200.dp),
+                        backgroundColor = Color.Gray
+                    )
+                }
+
+                if (showAlertBoxMatch){
+                    AlertDialog(
+                        onDismissRequest = { showAlertBoxMatch = false},
+                        buttons = {
+                            Box(
+                                contentAlignment = Alignment.Center,
+                                modifier = Modifier.fillMaxWidth()
+                            ){
+                                Button(
+                                    onClick = {
+                                        showAlertBoxMatch = false
+                                    }
+                                ) {
+                                    Text(text = "Close")
+                                }
+                            }
+                        },
+                        title = { Text(text = "Error") },
+                        text = { Text(text = "First look that you chose a Match and have checked the Attendance check")},
                         contentColor = Color.Red,
                         modifier = Modifier.size(width = 300.dp, height = 200.dp),
                         backgroundColor = Color.Gray
@@ -108,6 +129,7 @@ class HomeScreen (
                         colors = ButtonDefaults.buttonColors(backgroundColor = if (dropDownValue!=null) Color.Green else Color.Red),
                         onClick = {
                             if(dropDownValue!=null){
+                                teamCheckDone = true
                                 navigator.push(ChooseTeamScreen(dropDownValue!!))
                             } else {
                                 showAlertBox = true
@@ -118,22 +140,17 @@ class HomeScreen (
                     Button(
                         colors = ButtonDefaults.buttonColors(backgroundColor = if (bothTeamsChecked) Color.Green else Color.Red),
                         onClick = {
+                            if (teamCheckDone){
+                                //navigator.push((Playermanager(appViewModel = appViewModel)))
+                            } else {
+                                showAlertBoxMatch = true
+                            }
 
-                        }){
-                        Text(text = "Start Match")
+                        }) {
+                            Text(text = "Start Match")
                     }
-
-                    //Text(text = "Test")
-                    //Text(text = "ABC")
                 }
-
             }
         }
-
-
     }
-
-
-
-
 }
