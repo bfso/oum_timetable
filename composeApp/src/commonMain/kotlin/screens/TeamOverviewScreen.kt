@@ -1,7 +1,6 @@
 package screens
 
 import AppViewModel
-import DropdownMenu
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -91,10 +90,10 @@ class TeamOverviewScreen (val appViewModel: AppViewModel):Screen{
                         Text(text = player.firstName)
                         Text(text = player.playerNumber.toString())
                         Text(text = player.licenceNumber.toString())
-                        DropdownMenu(
-                            options = listOf(),
-                            onChange = {}
-                        )
+                        //DropdownMenu(
+                        //    options = listOf(),
+                        //    onChange = {}
+                        //)
                     }
                     Image(imageVector = Icons.Filled.AccountBox, contentDescription = "")
                 }
