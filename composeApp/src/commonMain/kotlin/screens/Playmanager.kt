@@ -1,20 +1,32 @@
 package screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
@@ -30,62 +42,124 @@ class Playmanager(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Time (center)
-            Box(
-                modifier = Modifier.fillMaxWidth(0.5f).height(100.dp).background(Color.Blue.copy(alpha = 0.5f )),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    fontSize = 50.sp,
-                    text = "20:00",
+            TimerTopCenter()
+            Row(
+                modifier = Modifier.fillMaxSize()
+            ){
+                TeamArea(
+                    label = "Heim",
+                    teamName = match.team1.name,
+                    onGoalButtonClick = {},
+                    onPenaltyButtonClick = {},
+                    onTimeoutButtonClick = {}
+                    )
+                ControlArea()
+                TeamArea(
+                    label = "Gast",
+                    teamName = match.team2.name,
+                    onGoalButtonClick = {},
+                    onPenaltyButtonClick = {},
+                    onTimeoutButtonClick = {}
                 )
-            }
-
-
-            // Timeeditbutton (right)
-
-            // Hometeam (left)
-
-
-            Box(Modifier.fillMaxSize()) {
-                Box(
-                    Modifier.align(Alignment.CenterStart).width(200.dp).height(40.dp)
-                        .background(Color.Red)
-                )
-                Text(match.team1.name, modifier = Modifier.align(Alignment.CenterStart))
-            }
-
-            // Period (center, with + and - for adding or deleting a Period)
-
-            // Guestteam (right)
-            Box(Modifier.fillMaxSize()) {
-                Box(
-                    Modifier.align(Alignment.CenterEnd).width(200.dp).height(40.dp)
-                        .background(Color.Green)
-                )
-                Text(match.team2.name, modifier = Modifier.align(Alignment.CenterEnd))
-            }
-
-            // Goalbutton for Hometeam (left)
-            Button(
-                onClick = {},
-                modifier = Modifier,
-            ) {
-                Text(text = "Goal hinzufügen")
+                }
             }
         }
+}
 
-        // Pausebutton
+    @Composable
+    fun RowScope.ControlArea() {
+        var periodCounter  by remember{ mutableStateOf(1)}
+        var timerRunning by remember{ mutableStateOf(false)}
+        Column (
+            modifier = Modifier.weight(1f).fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly
+        ){
+            Row (
+                modifier = Modifier.fillMaxWidth().height(56.dp),
+                horizontalArrangement = Arrangement.spacedBy(5.dp)
+            ){
+                //TODO MinusSign
+                Button(
+                    enabled = periodCounter>1,
+                    modifier = Modifier.weight(1f).fillMaxSize(),
+                    onClick = {periodCounter--},
+                    shape = RoundedCornerShape(CornerSize(15.dp))
+                ){
+                    Text("-", fontSize = 30.sp)
+                }
+                //TODO PeriodeDisplay
+                Box (
+                    modifier = Modifier.background(
+                        color = Color.Blue.copy(alpha = 0.5f),
+                        shape = RoundedCornerShape(corner = CornerSize(15.dp))
 
-        // Goalbutton for Guestteam (right)
+                    )
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    contentAlignment = Alignment.Center
+                ){
+                    Text(text = "$periodCounter", fontSize = 30.sp)
+                }
+                //TODO PlusSign
+                Button(
+                    modifier = Modifier.weight(1f).fillMaxSize(),
+                    onClick = {periodCounter++},
+                    shape = RoundedCornerShape(CornerSize(15.dp))
+                ){ Text("+", fontSize = 30.sp)
+                }
 
-        // Penaltybutton for Hometeam (left)
+            }
+            //TODO PlayButton
+            Button(
+                modifier = Modifier.height(63.dp),
+                shape = CircleShape,
+                onClick = {
+                timerRunning = !timerRunning
+            }){
+                if(timerRunning){
+                    Text("||", fontWeight = FontWeight(1000),fontSize = 20.sp)
+                }
+                else {
+                    Icon(imageVector = Icons.Filled.PlayArrow, contentDescription = null)
+                }
+            }
+        }
+    }
 
-        // Penaltybutton for Guestteam (right)
+    @Composable
+    fun TimerTopCenter(){
+        Box(
+            modifier = Modifier.fillMaxWidth(0.5f).height(100.dp)
+                .background(Color.Blue.copy(alpha = 0.5f)),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                fontSize = 50.sp,
+                text = "20:00",
+            )
+        }
+    }
 
-        // Timeoutbutton for Hometeam (left)
+@Composable
+fun RowScope.TeamArea(
+    label:String,
+    teamName:String,
+    onGoalButtonClick:()->Unit,
+    onPenaltyButtonClick:()->Unit,
+    onTimeoutButtonClick:()->Unit,
+) {
+    Column(
+        modifier = Modifier.weight(1.25f).fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        //TODO Label (Heim/Gast)
 
-        // Timeoutbutton for Guestteam (right)
+        //TODO Textfeld (Teamname)
+        //TODO Button (Goal)
+        //TODO Button (Strafe)
+        //TODO Button (Timeout)
     }
 }
 
