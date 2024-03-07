@@ -84,6 +84,7 @@ android {
 dependencies {
     implementation(libs.mobile.multiplatform)
     implementation(libs.voyager.screenmodel)
+    implementation(libs.library.base)
 }
 
 compose.desktop {
