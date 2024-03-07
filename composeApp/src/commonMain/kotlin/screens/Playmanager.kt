@@ -155,8 +155,12 @@ fun RowScope.TeamArea(
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         //TODO Label (Heim/Gast)
-
+        Text(label)
         //TODO Textfeld (Teamname)
+        Text(
+            // TODO Schrift grösser und breiter machen
+            teamName
+        )
         //TODO Button (Goal)
         //TODO Button (Strafe)
         //TODO Button (Timeout)
