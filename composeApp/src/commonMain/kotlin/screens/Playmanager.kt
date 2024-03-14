@@ -49,17 +49,17 @@ class Playmanager(
                 TeamArea(
                     label = "Heim",
                     teamName = match.team1.name,
-                    onGoalButtonClick = {},
-                    onPenaltyButtonClick = {},
-                    onTimeoutButtonClick = {}
+                    onGoalButtonClick = { println("Heimteam Goal Button funktionert") },
+                    onPenaltyButtonClick = {println("Heimteam Strafe Button funktionert")},
+                    onTimeoutButtonClick = {println("Heimteam Timeout Button funktionert")}
                     )
                 ControlArea()
                 TeamArea(
                     label = "Gast",
                     teamName = match.team2.name,
-                    onGoalButtonClick = {},
-                    onPenaltyButtonClick = {},
-                    onTimeoutButtonClick = {}
+                    onGoalButtonClick = {println("Gastteam Goal Button funktionert")},
+                    onPenaltyButtonClick = {println("Gastteam Strafe Button funktionert")},
+                    onTimeoutButtonClick = {println("Gastteam Timeout Button funktionert")}
                 )
                 }
             }
@@ -162,8 +162,23 @@ fun RowScope.TeamArea(
             teamName
         )
         //TODO Button (Goal)
+        Button(
+            onClick = { onGoalButtonClick() }
+        ){
+            Text(text = "Goal")
+        }
         //TODO Button (Strafe)
+        Button(
+            onClick = { onPenaltyButtonClick() }
+        ){
+            Text(text = "Strafe")
+        }
         //TODO Button (Timeout)
+        Button(
+            onClick = { onTimeoutButtonClick() }
+        ){
+            Text(text = "Timeout")
+        }
     }
 }
 
