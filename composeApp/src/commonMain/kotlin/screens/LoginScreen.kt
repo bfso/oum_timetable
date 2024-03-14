@@ -86,7 +86,7 @@ class LoginScreen(
                         label = { Text(text = "Password") })
                     Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterStart) {
                         Text(
-                            text = "forgot Password?",
+                            text = "Forgot password?",
                             textDecoration = TextDecoration.Underline,
                             modifier = Modifier
                                 .pointerHoverIcon(

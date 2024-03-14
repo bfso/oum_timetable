@@ -78,7 +78,7 @@ class HomeScreen (
                             }
                         },
                         title = { Text(text = "Error", modifier = Modifier.fillMaxWidth() , textAlign = TextAlign.Center)  },
-                        text = { Text(text = "Choose a Match", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center) },
+                        text = { Text(text = "Pick a Match", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center) },
                         contentColor = Color.Red,
                         modifier = Modifier.size(width = 300.dp, height = 200.dp),
                         backgroundColor = Color.Gray
@@ -103,7 +103,7 @@ class HomeScreen (
                             }
                         },
                         title = { Text(text = "Error",  modifier = Modifier.fillMaxWidth() , textAlign = TextAlign.Center) },
-                        text = { Text(text = "1. Look that you chose a Match 2. Have checked the Attendance check, both teams checked",  modifier = Modifier.fillMaxWidth() , textAlign = TextAlign.Center)},
+                        text = { Text(text = "1. Check if you picked a team 2. Check if attendance check is done for both teams",  modifier = Modifier.fillMaxWidth() , textAlign = TextAlign.Center)},
                         contentColor = Color.Red,
                         modifier = Modifier.size(width = 300.dp, height = 200.dp),
                         backgroundColor = Color.Gray
@@ -132,7 +132,7 @@ class HomeScreen (
 
                             ),
                         value = if(appViewModel.currentMatch == null){
-                            "Choose Match"
+                            "Choose a Match"
                                 }else{
                                     "${appViewModel.currentMatch!!.team1.name} vs. ${appViewModel.currentMatch!!.team2.name}"
                                      },
