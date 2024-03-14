@@ -150,7 +150,7 @@ class HomeScreen (
                         onClick = {
                             if(appViewModel.currentMatch!=null){
 
-                                navigator.push(ChooseTeamScreen(appViewModel.currentMatch!!))
+                                navigator.push(ChooseTeamScreen(appViewModel))
                             } else {
                                 showAlertBox = true
                             }
@@ -161,7 +161,7 @@ class HomeScreen (
                         colors = ButtonDefaults.buttonColors(backgroundColor = if (appViewModel.team1Ready && appViewModel.team2Ready) Color.Green else Color.Red),
                         onClick = {
                             if (appViewModel.team1Ready && appViewModel.team2Ready){
-                                //navigator.push((Playermanager(appViewModel = appViewModel)))
+                                navigator.push((Playmanager(appViewModel.currentMatch!!)))
                             } else {
                                 showAlertBoxMatch = true
                             }
