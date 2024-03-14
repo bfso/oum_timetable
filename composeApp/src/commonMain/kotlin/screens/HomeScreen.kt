@@ -1,7 +1,7 @@
 package screens
 
 import AppViewModel
-import DropdownMenuCustom
+import DropdownMenuMatches
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -121,7 +121,7 @@ class HomeScreen (
                     var dropDownValue:Match? by remember { mutableStateOf(null)}
                     var bothTeamsChecked by remember { mutableStateOf(false)}
 
-                    DropdownMenuCustom(
+                    DropdownMenuMatches(
                         modifier = Modifier.height(56.dp),
                         matches = listOf(
                             Match(team1 = Team(name = "Team 1"), team2 =  Team(name = "Team 2")),

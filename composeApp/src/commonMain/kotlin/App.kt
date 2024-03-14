@@ -17,7 +17,9 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.SlideTransition
+import data.Team
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import screens.FoulScreen
 import screens.LoginScreen
 
 @OptIn(ExperimentalResourceApi::class)
@@ -54,7 +56,7 @@ fun App() {
             //        text = { Text(text = "Enter was pressed") }
             //    )
             //}
-            Navigator(screen = LoginScreen(appViewModel))
+            Navigator(screen = FoulScreen(Team()))
             //{
             //    SlideTransition(it)
             //}
