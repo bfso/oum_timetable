@@ -24,7 +24,7 @@ import screens.TeamOverviewScreen
 fun App() {
     MaterialTheme {
         val viewModel = AppViewModel()
-        Playmanager(Match(Team(name = "Team Ivo"),Team(name = "loser Team"))).Content()
+        Playmanager(Match(Team(name = "Team Ivo"),Team(name = "UHC Waldbrand Eyholz"))).Content()
         //var showContent by remember { mutableStateOf(false) }
         //val greeting = remember { Greeting().greet() }
         //Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
