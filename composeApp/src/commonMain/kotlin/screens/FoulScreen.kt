@@ -111,22 +111,7 @@ class FoulScreen(
                         }
 
                 Box(){
-                    DropdownMenuPlayers(
-                        modifier = Modifier.height(56.dp),
-                        players = team.members,
-                    value = if(dropDownValueAssist == null){
-                        "Choose who made assist"
-                    }else{
-                        "${dropDownValueGoal!!.firstName} vs. ${dropDownValueGoal!!.name}"
-                    },
-                    label = "Assist",
-                    onItemClick = {
-                            player ->
-                            dropDownValueAssist = player
-                            assistChosen = true
 
-                    },
-                )
                 }
                 Box(){
                     Button( onClick = {
