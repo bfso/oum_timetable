@@ -48,7 +48,7 @@ class ForgotPasswordScreen : Screen {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(30.dp)
             ) {
-                Text(text = "Forgot Password Screen", fontSize = 50.sp)
+                Text(text = "Forgot Password", fontSize = 50.sp)
                 Button(
                     modifier = Modifier.pointerHoverIcon(icon = PointerIcon.Hand),
                     onClick = {
@@ -56,7 +56,6 @@ class ForgotPasswordScreen : Screen {
                 }) {
                     Text(text = "Back")
                 }
-                Text(text = test)
             }
         }
     }

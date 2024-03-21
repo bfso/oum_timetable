@@ -8,10 +8,8 @@ import cafe.adriel.voyager.core.model.ScreenModel
 
 
 class LoginScreenModel :ScreenModel {
-    //val test = listOf("Test","alshdfoas","aoisdof")
 
-    //var username by   mutableStateOf("")
-    //var password by   mutableStateOf("")
     var username by   mutableStateOf("")
     var password by   mutableStateOf("")
+    var passwordVisible by   mutableStateOf(false)
 }

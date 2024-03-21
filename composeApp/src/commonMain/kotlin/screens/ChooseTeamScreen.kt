@@ -1,6 +1,7 @@
 package screens
 
 import AppViewModel
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,43 +22,55 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import data.Match
 
-class ChooseTeamScreen (private val match:Match):Screen {
+class ChooseTeamScreen (private val appViewModel: AppViewModel):Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         ScreenWithKeyInput(
             keyEvents = mapOf(
-                Pair(Key.Enter){navigator.push(ChooseTeamScreen(match = Match()));true},
+                //Pair(Key.Enter){navigator.push(ChooseTeamScreen(match = Match()));true},
                 Pair(Key.Escape){navigator.pop()},
             ),
             contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxSize()
         ) {
             Column (
-                modifier = Modifier.fillMaxWidth(0.5f)
+                modifier = Modifier.fillMaxWidth(0.5f),
+                verticalArrangement = Arrangement.spacedBy(40.dp),
+
             ) {
                 Button(
                     onClick = {
-                              navigator.push(TeamOverviewScreen(appViewModel = AppViewModel()))
+                              navigator.push(TeamOverviewScreen(appViewModel = appViewModel, confirmTeamChecked =  {
+                                  //TODO Somehow this schould change the boolean in the viewmodel when the button on the next screen is pressed
+                                  appViewModel.team1Ready = true
+                              }))
                     },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(60.dp)
                         .pointerHoverIcon(icon = PointerIcon.Hand),
                 ){
-                    Text(text = match.team1.name)
+                    Text(text = appViewModel.currentMatch!!.team1.name)
                 }
-                Spacer(Modifier.height(40.dp))
                 Button(
                     onClick = {
-                        navigator.push(TeamOverviewScreen(appViewModel = AppViewModel()))
+                        navigator.push(TeamOverviewScreen(appViewModel = appViewModel, confirmTeamChecked =  {
+                            appViewModel.team2Ready = true
+                        }))
                     },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(60.dp)
                         .pointerHoverIcon(icon = PointerIcon.Hand)
                 ){
-                    Text(text = match.team2.name)
+                    Text(text = appViewModel.currentMatch!!.team2.name)
+                }
+
+                Button(
+                    onClick = {navigator.pop()}
+                ){
+                    Text(text = "go back")
                 }
             }
         }
