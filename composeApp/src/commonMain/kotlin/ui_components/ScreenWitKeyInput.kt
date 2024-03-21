@@ -1,4 +1,4 @@
-package screens
+package ui_components
 
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Box

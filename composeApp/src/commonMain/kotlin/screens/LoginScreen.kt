@@ -19,8 +19,6 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.Key
@@ -34,18 +32,17 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
-import cafe.adriel.voyager.kodein.rememberNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import login.ApiLogin
 import login.LocalLoginTest
+import login.Login
+import ui_components.ScreenWithKeyInput
 
 class LoginScreen(
-    val appViewModel: AppViewModel
-
+    val appViewModel: AppViewModel,
 ) : Screen {
-
+    val login:Login = LocalLoginTest
 
 
 
@@ -147,7 +144,7 @@ class LoginScreen(
     }
 
     private fun validateLoginData(navigator:Navigator) {
-        if(LocalLoginTest.login(username = loginScreenModel.username, password =  loginScreenModel.password)){
+        if(login.login(username = loginScreenModel.username, password =  loginScreenModel.password)){
             navigator.push(HomeScreen(appViewModel = appViewModel))
         }
     }
