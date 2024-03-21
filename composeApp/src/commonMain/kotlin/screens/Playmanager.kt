@@ -33,6 +33,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import data.Match
+import data.Team
 
 
 class Playmanager(
@@ -53,7 +54,7 @@ class Playmanager(
                     label = "Heim",
                     teamName = match.team1.name,
                     onGoalButtonClick = { println("Heimteam Goal Button funktionert") },
-                    onPenaltyButtonClick = {println("Heimteam Strafe Button funktionert")},
+                    onPenaltyButtonClick = {navigator.push(FoulScreen(team = match.team1, match = match))},
                     onTimeoutButtonClick = {println("Heimteam Timeout Button funktionert")}
                     )
                 ControlArea()
@@ -61,7 +62,7 @@ class Playmanager(
                     label = "Gast",
                     teamName = match.team2.name,
                     onGoalButtonClick = {println("Gastteam Goal Button funktionert")},
-                    onPenaltyButtonClick = {println("Gastteam Strafe Button funktionert")},
+                    onPenaltyButtonClick = {navigator.push(FoulScreen(team = match.team2, match = match))},
                     onTimeoutButtonClick = {println("Gastteam Timeout Button funktionert")}
                 )
                 }

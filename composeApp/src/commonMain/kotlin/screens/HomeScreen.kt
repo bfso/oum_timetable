@@ -1,7 +1,7 @@
 package screens
 
 import AppViewModel
-import ui_components.DropdownMenuCustom
+import ui_components.DropdownMenuMatches
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -86,30 +86,30 @@ class HomeScreen (
                     )
                 }
 
-                if (showAlertBoxMatch){
-                    AlertDialog(
-                        onDismissRequest = { showAlertBoxMatch = false},
-                        buttons = {
-                            Box(
-                                contentAlignment = Alignment.Center,
-                                modifier = Modifier.fillMaxWidth()
-                            ){
-                                Button(
-                                    onClick = {
-                                        showAlertBoxMatch = false
-                                    }
-                                ) {
-                                    Text(text = "Close")
-                                }
-                            }
-                        },
-                        title = { Text(text = "Error",  modifier = Modifier.fillMaxWidth() , textAlign = TextAlign.Center) },
-                        text = { Text(text = "1. Check if you picked a team 2. Check if attendance check is done for both teams",  modifier = Modifier.fillMaxWidth() , textAlign = TextAlign.Center)},
-                        contentColor = Color.Red,
-                        modifier = Modifier.size(width = 300.dp, height = 200.dp),
-                        backgroundColor = Color.Gray
-                    )
-                }
+                //if (showAlertBoxMatch){
+                //    AlertDialog(
+                //        onDismissRequest = { showAlertBoxMatch = false},
+                //        buttons = {
+                //            Box(
+                //                contentAlignment = Alignment.Center,
+                //                modifier = Modifier.fillMaxWidth()
+                //            ){
+                //                Button(
+                //                    onClick = {
+                //                        showAlertBoxMatch = false
+                //                    }
+                //                ) {
+                //                    Text(text = "Close")
+                //                }
+                //            }
+                //        },
+                //        title = { Text(text = "Error",  modifier = Modifier.fillMaxWidth() , textAlign = TextAlign.Center) },
+                //        text = { Text(text = "1. Check if you picked a team 2. Check if attendance check is done for both teams",  modifier = Modifier.fillMaxWidth() , textAlign = TextAlign.Center)},
+                //        contentColor = Color.Red,
+                //        modifier = Modifier.size(width = 300.dp, height = 200.dp),
+                //        backgroundColor = Color.Gray
+                //    )
+                //}
 
 
 
@@ -122,7 +122,7 @@ class HomeScreen (
                     var dropDownValue:Match? by remember { mutableStateOf(null)}
                     var bothTeamsChecked by remember { mutableStateOf(false)}
 
-                    DropdownMenuCustom(
+                    DropdownMenuMatches(
                         modifier = Modifier.height(56.dp),
                         matches = appViewModel.matches,
                         value = if(appViewModel.currentMatch == null){
@@ -151,18 +151,18 @@ class HomeScreen (
                         }){
                         Text(text = "Anwesenheitscheck")
                     }
-                    Button(
-                        colors = ButtonDefaults.buttonColors(backgroundColor = if (appViewModel.team1Ready && appViewModel.team2Ready) Color.Green else Color.Red),
-                        onClick = {
-                            if (appViewModel.team1Ready && appViewModel.team2Ready){
-                                navigator.push((Playmanager(appViewModel.currentMatch!!)))
-                            } else {
-                                showAlertBoxMatch = true
-                            }
+                    //Button(
+                    //    colors = ButtonDefaults.buttonColors(backgroundColor = if (appViewModel.team1Ready && appViewModel.team2Ready) Color.Green else Color.Red),
+                    //    onClick = {
+                    //        if (appViewModel.team1Ready && appViewModel.team2Ready){
+                    //            navigator.push((Playmanager(appViewModel.currentMatch!!)))
+                    //        } else {
+                    //            showAlertBoxMatch = true
+                    //        }
 
-                        }) {
-                            Text(text = "Start Match")
-                    }
+                    //    }) {
+                    //        Text(text = "Start Match")
+                    //}
 
                 }
             }
