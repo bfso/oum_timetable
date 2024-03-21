@@ -1,7 +1,7 @@
 package screens
 
 import AppViewModel
-import DropdownMenuCustom
+import ui_components.DropdownMenuCustom
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,6 +32,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import data.Match
 import data.Team
 import androidx.compose.ui.input.key.Key
+import ui_components.ScreenWithKeyInput
 
 class HomeScreen (
     val appViewModel: AppViewModel
@@ -123,14 +124,7 @@ class HomeScreen (
 
                     DropdownMenuCustom(
                         modifier = Modifier.height(56.dp),
-                        matches = listOf(
-                            Match(team1 = Team(name = "Team 1"), team2 =  Team(name = "Team 2")),
-                            Match(team1 = Team(name = "Team 3"), team2 = Team(name = "Team 4")),
-                            Match(team1 = Team(name = "Team 5"), team2 = Team(name = "Team 6")),
-                            Match(team1 = Team(name = "Team 1"), team2 = Team(name = "Team 3")),
-                            Match(team1 = Team(name = "Team 2"), team2 = Team(name = "Team 3")),
-
-                            ),
+                        matches = appViewModel.matches,
                         value = if(appViewModel.currentMatch == null){
                             "Choose a Match"
                                 }else{

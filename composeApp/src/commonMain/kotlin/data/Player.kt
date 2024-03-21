@@ -1,7 +1,7 @@
 package data
 
-import enums.Present
 import androidx.compose.ui.graphics.vector.ImageVector
+import enums.Attendance
 
 data class Player(
     val name: String = "UNDEFINED NAME",
@@ -9,5 +9,5 @@ data class Player(
     val playerNumber: Int = -1,
     val licenceNumber: Int = -1,
     val image: ImageVector? = null,
-    val present: Present = Present.NONE
+    val present: Attendance = Attendance.NONE
 )

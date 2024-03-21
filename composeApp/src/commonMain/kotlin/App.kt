@@ -17,6 +17,10 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.SlideTransition
+import data.DataApi
+import data.DataLocal
+import data.DataTest
+import login.LocalLoginTest
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import screens.LoginScreen
 
@@ -24,37 +28,12 @@ import screens.LoginScreen
 @Composable
 fun App() {
     MaterialTheme {
-        val appViewModel = AppViewModel()
+        val appViewModel = AppViewModel(DataTest())
         //var alertBox by remember { mutableStateOf(false) }
         Scaffold (
             modifier = Modifier
-                //.focusable()
-                //.focusRequester(FocusRequester())
-                //.onKeyEvent {
-                //when (it.key){
-                //    //Key.Escape->{ navigator.pop()}
-                //    Key.Enter ->{
-                //        alertBox = true
-                //        true}
-                //    else -> {false}
-                //    }
-                //}
         ){
-            //if (alertBox){
-            //    AlertDialog(
-            //        onDismissRequest = {alertBox = false},
-            //        confirmButton = {
-            //            Button(
-            //                onClick = {alertBox = false}
-            //            ){
-            //                Text(text = "OK")
-            //            }
-
-            //                        },
-            //        text = { Text(text = "Enter was pressed") }
-            //    )
-            //}
-            Navigator(screen = LoginScreen(appViewModel))
+            Navigator(screen = LoginScreen(appViewModel = appViewModel))
             //{
             //    SlideTransition(it)
             //}
