@@ -29,6 +29,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import data.Player
+import ui_components.ScreenWithKeyInput
 
 class TeamOverviewScreen(
     val appViewModel: AppViewModel,

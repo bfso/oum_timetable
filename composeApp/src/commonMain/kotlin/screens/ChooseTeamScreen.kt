@@ -2,9 +2,7 @@ package screens
 
 import AppViewModel
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import data.Match
+import ui_components.ScreenWithKeyInput
 
 class ChooseTeamScreen (private val appViewModel: AppViewModel):Screen {
     @Composable
@@ -40,6 +38,7 @@ class ChooseTeamScreen (private val appViewModel: AppViewModel):Screen {
 
             ) {
                 Button(
+                    enabled = !appViewModel.team1Ready,
                     onClick = {
                               navigator.push(TeamOverviewScreen(appViewModel = appViewModel, confirmTeamChecked =  {
                                   //TODO Somehow this schould change the boolean in the viewmodel when the button on the next screen is pressed
@@ -54,6 +53,7 @@ class ChooseTeamScreen (private val appViewModel: AppViewModel):Screen {
                     Text(text = appViewModel.currentMatch!!.team1.name)
                 }
                 Button(
+                    enabled = !appViewModel.team2Ready,
                     onClick = {
                         navigator.push(TeamOverviewScreen(appViewModel = appViewModel, confirmTeamChecked =  {
                             appViewModel.team2Ready = true

@@ -1,6 +1,6 @@
 package enums
 
-enum class Present {
+enum class Attendance {
     NONE,
     PRESENT,
     ABSENT
