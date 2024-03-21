@@ -19,6 +19,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,9 +33,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import data.Match
 
-val containerColor:Color = Color.Blue.copy(alpha = 0.3f)
+val containerColor: Color = Color.Blue.copy(alpha = 0.3f)
 
 class Playmanager(
     val match: Match
@@ -50,21 +54,21 @@ class Playmanager(
             TimerTopCenter()
             Row(
                 modifier = Modifier.fillMaxSize()
-            ){
+            ) {
                 TeamArea(
                     label = "Heim",
                     teamName = match.team1.name,
-                    onGoalButtonClick = { println("Heimteam Goal Button funktionert") },
-                    onPenaltyButtonClick = {println("Heimteam Strafe Button funktionert")},
-                    onTimeoutButtonClick = {println("Heimteam Timeout Button funktionert")}
+                    onGoalButtonClick = {  },
+                    onPenaltyButtonClick = { println("Heimteam Strafe Button funktionert") },
+                    onTimeoutButtonClick = { println("Heimteam Timeout Button funktionert") }
                 )
                 ControlArea()
                 TeamArea(
                     label = "Gast",
                     teamName = match.team2.name,
-                    onGoalButtonClick = {println("Gastteam Goal Button funktionert")},
-                    onPenaltyButtonClick = {println("Gastteam Strafe Button funktionert")},
-                    onTimeoutButtonClick = {println("Gastteam Timeout Button funktionert")}
+                    onGoalButtonClick = {  },
+                    onPenaltyButtonClick = { println("Gastteam Strafe Button funktionert") },
+                    onTimeoutButtonClick = { println("Gastteam Timeout Button funktionert") }
                 )
             }
         }
@@ -73,30 +77,31 @@ class Playmanager(
 
 @Composable
 fun RowScope.ControlArea() {
-    var periodCounter  by remember{ mutableStateOf(1)}
-    var timerRunning by remember{ mutableStateOf(false)}
-    Column (
+    var periodCounter by remember { mutableStateOf(1) }
+    var timerRunning by remember { mutableStateOf(false) }
+    val navigator = LocalNavigator.currentOrThrow
+    Column(
         modifier = Modifier.weight(1f).fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly
-    ){
-        Row (
+    ) {
+        Row(
             modifier = Modifier.fillMaxWidth().height(56.dp),
             horizontalArrangement = Arrangement.spacedBy(5.dp)
-        ){
+        ) {
 
             // MinusSign
             Button(
-                enabled = periodCounter>1,
+                enabled = periodCounter > 1,
                 modifier = Modifier.weight(1f).fillMaxSize(),
-                onClick = {periodCounter--},
+                onClick = { periodCounter-- },
                 shape = RoundedCornerShape(CornerSize(15.dp))
-            ){
+            ) {
                 Text("-", fontSize = 30.sp)
             }
 
             // PeriodeDisplay
-            Box (
+            Box(
                 modifier = Modifier.background(
                     color = containerColor,
                     shape = RoundedCornerShape(corner = CornerSize(15.dp))
@@ -105,38 +110,59 @@ fun RowScope.ControlArea() {
                     .weight(1f)
                     .fillMaxHeight(),
                 contentAlignment = Alignment.Center
-            ){
+            ) {
                 Text(text = "$periodCounter", fontSize = 30.sp)
             }
 
             // PlusSign
             Button(
                 modifier = Modifier.weight(1f).fillMaxSize(),
-                onClick = {periodCounter++},
+                onClick = { periodCounter++ },
                 shape = RoundedCornerShape(CornerSize(15.dp))
-            ){ Text("+", fontSize = 30.sp)
+            ) {
+                Text("+", fontSize = 30.sp)
             }
 
         }
         //TODO PlayButton
-        Button(
-            modifier = Modifier.height(63.dp),
-            shape = CircleShape,
-            onClick = {
-                timerRunning = !timerRunning
-            }){
-            if(timerRunning){
-                Text("||", fontWeight = FontWeight(1000),fontSize = 20.sp)
+
+        Row (
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(space = 20.dp, alignment = Alignment.CenterHorizontally),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Button(
+                modifier = Modifier.height(63.dp),
+                shape = CircleShape,
+                onClick = {
+                    timerRunning = !timerRunning
+                }
+            ) {
+                if (timerRunning) {
+                    Text("||", fontWeight = FontWeight(1000), fontSize = 20.sp)
+                } else {
+                    Icon(imageVector = Icons.Filled.PlayArrow, contentDescription = null)
+                }
             }
-            else {
-                Icon(imageVector = Icons.Filled.PlayArrow, contentDescription = null)
-            }
+
+            // TODO Reset Button with Link to Startpage
+            //Button(
+            //    modifier = Modifier.height(63.dp),
+            //    shape = CircleShape,
+            //    onClick = {
+            //        navigator.push(HomeScreen())
+            //    }
+            //) {
+            //    Icon(imageVector = Icons.Filled.Done, contentDescription = null)
+            //}
         }
+
+
     }
 }
 
 @Composable
-fun TimerTopCenter(){
+fun TimerTopCenter() {
     Box(
         modifier = Modifier.fillMaxWidth(0.5f).height(100.dp)
             .background(containerColor),
@@ -151,12 +177,13 @@ fun TimerTopCenter(){
 
 @Composable
 fun RowScope.TeamArea(
-    label:String,
-    teamName:String,
-    onGoalButtonClick:()->Unit,
-    onPenaltyButtonClick:()->Unit,
-    onTimeoutButtonClick:()->Unit,
+    label: String,
+    teamName: String,
+    onGoalButtonClick: () -> Unit,
+    onPenaltyButtonClick: () -> Unit,
+    onTimeoutButtonClick: () -> Unit,
 ) {
+    var timeoutAvailable by remember{mutableStateOf(true)}
     Column(
         modifier = Modifier.weight(1.25f).fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -170,61 +197,71 @@ fun RowScope.TeamArea(
                 .height(60.dp)
                 .background(color = containerColor, shape = RoundedCornerShape(15.dp)),
             contentAlignment = Alignment.Center
-        ){
+        ) {
             Text(
                 text = teamName,
                 fontSize = 20.sp
             )
         }
 
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(space = 5.dp, alignment = Alignment.CenterHorizontally),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            var goalCounter by remember { mutableStateOf(0) }
 
-        var goalCounter by remember { mutableStateOf(0) }
+            // Button (Goal)
+            Button(
+                modifier = Modifier.width(120.dp),
+                onClick = {
+                    onGoalButtonClick()
+                    goalCounter++
+                }
+            ) {
+                Text(text = "Goal")
+            }
 
-        //TODO Button (Goal)
-        Button(
-            modifier = Modifier.width(120.dp),
-            onClick = { onGoalButtonClick(), goalCounter++ }, // TODO Error fixen
-        ){
-            Text(text = "Goal")
+            // Goalanzeige
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .background(
+                        color = containerColor,
+                        shape = RoundedCornerShape(15.dp)
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(text = "$goalCounter", fontSize = 15.sp)
+            }
         }
 
-        // TODO Goalanzeige
-        Box (
-            modifier = Modifier.background(
-                color = containerColor,
-                shape = RoundedCornerShape(corner = CornerSize(15.dp))
-
-            )
-                .weight(1f)
-                .fillMaxHeight(),
-            contentAlignment = Alignment.Center
-        ){
-            Text(text = "$goalCounter", fontSize = 15.sp)
-        }
-
-
-        //TODO Button (Strafe)
+        // Button (Strafe)
         Button(
             modifier = Modifier.width(120.dp),
             onClick = { onPenaltyButtonClick() }
-        ){
+        ) {
             Text(text = "Strafe")
         }
 
         // TODO Strafanzeige als Kreis (Kreis ist ausgefüllt falls Strafe läuft)
         //...
 
-
-        //TODO Button (Timeout)
+        // Button (Timeout)
         Button(
+            enabled = timeoutAvailable,
             modifier = Modifier.width(120.dp),
-            onClick = { onTimeoutButtonClick() }
-        ){
+            onClick = {
+                timeoutAvailable = false
+                onTimeoutButtonClick()
+            }
+        ) {
             Text(text = "Timeout")
         }
 
         // TODO Strafanzeige als Kreis (Kreis ist ausgefüllt falls Strafe läuft)
         //...
+
 
     }
 }

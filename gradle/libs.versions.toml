@@ -32,6 +32,7 @@ mobile-multiplatform = { group = "dev.icerock", name = "mobile-multiplatform", v
 voyager-navigator = { group = "cafe.adriel.voyager", name = "voyager-navigator", version = "1.1.0-alpha02" }
 voyager-tab-navigator = { group = "cafe.adriel.voyager", name = "voyager-tab-navigator", version = "1.1.0-alpha02" }
 voyager-transitions = { group = "cafe.adriel.voyager", name = "voyager-transitions", version = "1.1.0-alpha02" }
+androidx-foundation-layout-desktop = { group = "androidx.compose.foundation", name = "foundation-layout-desktop", version = "1.6.4" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
