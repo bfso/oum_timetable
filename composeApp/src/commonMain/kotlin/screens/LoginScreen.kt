@@ -10,8 +10,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.Button
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,32 +26,43 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
+import cafe.adriel.voyager.kodein.rememberNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import login.ApiLogin
+import login.LocalLoginTest
 
 class LoginScreen(
     val appViewModel: AppViewModel
 
 ) : Screen {
 
+
+
+
     override val key: ScreenKey = uniqueScreenKey
 
+    val loginScreenModel by mutableStateOf(LoginScreenModel())
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        //val screenModel = navigator.rememberNavigatorScreenModel<LoginScreenModel>()
+        //val loginScreenModel = navigator.rememberNavigatorScreenModel<LoginScreenModel>()
 
 
-        var username by remember { mutableStateOf("") }
-        var password by remember { mutableStateOf("") }
+
+
+
+
         ScreenWithKeyInput(
             keyEvents = mapOf(
                 Pair(Key.Enter){
@@ -74,19 +89,33 @@ class LoginScreen(
                     TextField(
                         singleLine = true,
                         modifier = Modifier.fillMaxWidth(),
-                        onValueChange = { username = it },
-                        value = username,
+                        onValueChange = { loginScreenModel.username = it },
+                        value = loginScreenModel.username,
                         label = { Text(text = "Username") })
                     Spacer(Modifier.height(10.dp))
                     TextField(
+                        visualTransformation = if (loginScreenModel.passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                         singleLine = true,
                         modifier = Modifier.fillMaxWidth(),
-                        onValueChange = { password = it },
-                        value = password,
+                        onValueChange = { loginScreenModel.password = it },
+                        trailingIcon = {
+                            //TODO find a better icon that works on both platforms
+                            val image = if (loginScreenModel.passwordVisible)
+                                Icons.Filled.Lock
+                            else Icons.Filled.Lock
+
+                            // Please provide localized description for accessibility services
+                            val description = if (loginScreenModel.passwordVisible) "Hide password" else "Show password"
+
+                            IconButton(onClick = {loginScreenModel.passwordVisible = !loginScreenModel.passwordVisible}){
+                                Icon(imageVector  = image, description)
+                            }
+                        },
+                        value = loginScreenModel.password,
                         label = { Text(text = "Password") })
                     Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterStart) {
                         Text(
-                            text = "forgot Password?",
+                            text = "Forgot password?",
                             textDecoration = TextDecoration.Underline,
                             modifier = Modifier
                                 .pointerHoverIcon(
@@ -118,6 +147,8 @@ class LoginScreen(
     }
 
     private fun validateLoginData(navigator:Navigator) {
-        navigator.push(HomeScreen(appViewModel = appViewModel))
+        if(LocalLoginTest.login(username = loginScreenModel.username, password =  loginScreenModel.password)){
+            navigator.push(HomeScreen(appViewModel = appViewModel))
+        }
     }
 }

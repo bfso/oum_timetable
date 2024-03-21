@@ -11,9 +11,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
@@ -28,36 +30,56 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import data.Player
 
-class TeamOverviewScreen (val appViewModel: AppViewModel):Screen{
+class TeamOverviewScreen(
+    val appViewModel: AppViewModel,
+    private val confirmTeamChecked: () -> Unit
+) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        ScreenWithKeyInput (
+        ScreenWithKeyInput(
             keyEvents = mapOf(
-                Pair(Key.Escape){navigator.pop()}
+                Pair(Key.Escape) { navigator.pop() }
             ),
             modifier = Modifier.fillMaxSize()
-        ){
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(4),
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(all = 10.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-            ){
-                items(appViewModel.data.matches[0].team1.members){
-                    PlayerCard(player = it)
+        ) {
+            Column(modifier = Modifier.fillMaxSize()) {
+                Box (
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ){
+                    Button(onClick = {
+                        confirmTeamChecked()
+                        navigator.pop()
+
+                    }) {
+                        Text(text = "finished")
+                    }
                 }
+
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(4),
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(all = 10.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    items(appViewModel.currentMatch!!.team1.members) {
+                        PlayerCard(player = it)
+                    }
+                }
+
             }
+
         }
     }
 
     @Composable
-    fun PlayerCard( player: Player = Player()) {
-        Box (
+    fun PlayerCard(player: Player = Player()) {
+        Box(
             modifier = Modifier
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
-        ){
+        ) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier

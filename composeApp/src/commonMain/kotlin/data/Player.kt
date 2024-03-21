@@ -1,6 +1,6 @@
 package data
 
-import Present
+import enums.Present
 import androidx.compose.ui.graphics.vector.ImageVector
 
 data class Player(
