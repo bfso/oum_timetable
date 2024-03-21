@@ -15,6 +15,7 @@ import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,12 +40,11 @@ class FoulScreen(
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        var goalChosen by remember { mutableStateOf( false) }
-        var assistChosen by remember { mutableStateOf( false) }
-        var dropDownValueGoal:Player? by remember { mutableStateOf( null) }
-        var dropDownValueAssist:Player? by remember { mutableStateOf( null) }
+        var faulChosen by remember { mutableStateOf( false) }
+        var dropDownValueFaul:Player? by remember { mutableStateOf( null) }
         var showAlertBox by remember { mutableStateOf( false) }
-
+        var penaltyTime by remember { mutableStateOf("") }
+        val test = ""
         ScreenWithKeyInput (
             keyEvents = mapOf(
                 Pair(Key.Escape){navigator.pop()}
@@ -79,7 +79,7 @@ class FoulScreen(
                         }
                     },
                     title = { Text(text = "Error", modifier = Modifier.fillMaxWidth() , textAlign = TextAlign.Center)  },
-                    text = { Text(text = "Choose a goal shooter and an assist maker", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center) },
+                    text = { Text(text = "Choose a faul maker and how long the penalty lasts", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center) },
                     contentColor = Color.Red,
                     modifier = Modifier.size(width = 300.dp, height = 200.dp),
                     backgroundColor = Color.Gray
@@ -94,16 +94,16 @@ class FoulScreen(
                 DropdownMenuPlayers(
                     modifier = Modifier.height(56.dp),
                     players = team.members,
-                    value = if(dropDownValueGoal == null){
-                        "Choose who made goal"
+                    value = if(dropDownValueFaul == null){
+                        "Choose who made Faul"
                     }else{
-                        "${dropDownValueGoal!!.firstName} vs. ${dropDownValueGoal!!.name}"
+                        "${dropDownValueFaul!!.firstName} ${dropDownValueFaul!!.name}, Number: ${dropDownValueFaul!!.playerNumber}"
                     },
-                    label = "Goal",
+                    label = "Faul",
                     onItemClick = {
                             match ->
-                        dropDownValueGoal = match
-                        goalChosen = true
+                        dropDownValueFaul = match
+                        faulChosen = true
                     },
                     )
 
@@ -111,15 +111,19 @@ class FoulScreen(
                         }
 
                 Box(){
-
+                    TextField(
+                        singleLine = true,
+                        onValueChange = { value -> penaltyTime = value.filter { it.isDigit() } }, //penaltyTime = it
+                        value = penaltyTime,
+                        label = { Text(text = "Faul Time") })
                 }
                 Box(){
                     Button( onClick = {
-                        if (goalChosen && assistChosen){
+                        if (faulChosen && !penaltyTime.equals(test)) {
                             //navigator.push((Playermanager(appViewModel = appViewModel)))
                         } else {
                             showAlertBox = true
-                        } }, colors = ButtonDefaults.buttonColors(backgroundColor = if (goalChosen && assistChosen){ Color.Green} else {Color.Red})){
+                        } }, colors = ButtonDefaults.buttonColors(backgroundColor = if (faulChosen && !penaltyTime.equals(test)){ Color.Green} else {Color.Red})){
 
                         Text(text = "Send")
                     }
