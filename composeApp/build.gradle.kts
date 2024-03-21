@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
+    //id("io.realm.kotlin")
 }
 
 kotlin {
@@ -40,10 +41,15 @@ kotlin {
             implementation(libs.voyager.koin)
             implementation(libs.voyager.kodein)
             implementation(libs.voyager.bottom.sheet.navigator)
+            implementation(libs.library.base)
+            implementation(libs.retrofit)
+            implementation(libs.converter.gson)
 
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
+            implementation(libs.material3.desktop)
+            implementation(libs.androidx.material3.desktop)
         }
     }
 }
@@ -81,20 +87,23 @@ android {
         debugImplementation(libs.compose.ui.tooling)
     }
 }
-dependencies {
-    implementation(libs.mobile.multiplatform)
-    implementation(libs.voyager.screenmodel)
-    implementation(libs.library.base)
-}
 
 compose.desktop {
     application {
         mainClass = "MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            includeAllModules = true
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe)
             packageName = "org.oum_timetable.project"
             packageVersion = "1.0.0"
+            modules("java.instrument", "java.sql", "jdk.unsupported")
+            windows{
+
+                packageVersion = "1.0.0"
+                msiPackageVersion  = "1.0.0"
+                exePackageVersion = "1.0.0"
+            }
         }
     }
 }

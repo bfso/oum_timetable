@@ -1,4 +1,4 @@
-package screens
+package screens.login
 
 import AppViewModel
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -35,14 +35,14 @@ import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import login.LocalLoginTest
-import login.Login
+import screens.ForgotPasswordScreen
+import screens.HomeScreen
 import ui_components.ScreenWithKeyInput
 
 class LoginScreen(
     val appViewModel: AppViewModel,
 ) : Screen {
-    val login:Login = LocalLoginTest
+    val login: Login = LocalLoginTest
 
 
 

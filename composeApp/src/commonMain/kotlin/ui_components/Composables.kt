@@ -2,11 +2,11 @@ package ui_components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.onClick
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
@@ -29,7 +29,6 @@ import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import data.Match
-import java.awt.Cursor
 
 //@Composable
 //fun DropdownMenu(options: List<String>, onChange: (String)->Unit) {
@@ -100,7 +99,7 @@ fun DropdownMenuCustom(
             ),
             modifier = Modifier
                 .focusable(enabled = true)
-                .onClick {expanded = !expanded}
+                .clickable {expanded = !expanded}
                 .indicatorLine(
                     enabled = true,
                     isError = false,
@@ -112,7 +111,7 @@ fun DropdownMenuCustom(
                     unfocusedIndicatorLineThickness = bottomLineThickness
                 )
                 .pointerHoverIcon(
-                    icon = PointerIcon(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)),
+                    icon = PointerIcon.Hand,
                     overrideDescendants = true
                 ),
             readOnly = true,
@@ -130,8 +129,8 @@ fun DropdownMenuCustom(
         DropdownMenu(
             modifier = Modifier
                 .pointerHoverIcon(
-                    overrideDescendants = true,
-                    icon = PointerIcon(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR))
+                    icon = PointerIcon.Hand,
+                    overrideDescendants = true
                 ),
             expanded = expanded,
             onDismissRequest = {expanded = false},

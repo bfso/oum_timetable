@@ -1,4 +1,4 @@
-package screens
+package screens.login
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

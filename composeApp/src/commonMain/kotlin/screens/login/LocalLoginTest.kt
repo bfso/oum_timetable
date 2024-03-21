@@ -1,6 +1,6 @@
-package login
+package screens.login
 
-object LocalLoginTest:Login {
+object LocalLoginTest: Login {
 
     private val testLoginData : Map<String,String> = mapOf(
         Pair("Ivo","test1234"),

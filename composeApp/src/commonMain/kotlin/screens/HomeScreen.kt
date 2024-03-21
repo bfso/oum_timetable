@@ -30,7 +30,6 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import data.Match
-import data.Team
 import androidx.compose.ui.input.key.Key
 import ui_components.ScreenWithKeyInput
 
@@ -155,7 +154,7 @@ class HomeScreen (
                         colors = ButtonDefaults.buttonColors(backgroundColor = if (appViewModel.team1Ready && appViewModel.team2Ready) Color.Green else Color.Red),
                         onClick = {
                             if (appViewModel.team1Ready && appViewModel.team2Ready){
-                                navigator.push((Playmanager(appViewModel.currentMatch!!)))
+                                navigator.push((GameManager(appViewModel.currentMatch!!)))
                             } else {
                                 showAlertBoxMatch = true
                             }

@@ -1,6 +1,6 @@
-package login
+package screens.login
 
-object ApiLogin:Login {
+object ApiLogin: Login {
     override fun login(username: String, password: String): Boolean {
         TODO("Not yet implemented")
     }

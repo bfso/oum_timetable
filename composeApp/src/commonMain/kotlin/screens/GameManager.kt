@@ -35,7 +35,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import data.Match
 
 
-class Playmanager(
+class GameManager(
     val match: Match
 ) : Screen {
     @Composable
@@ -67,12 +67,9 @@ class Playmanager(
                 }
             }
         }
-}
-
-
 
     @Composable
-    fun RowScope.ControlArea() {
+    private fun RowScope.ControlArea() {
         var periodCounter  by remember{ mutableStateOf(1)}
         var timerRunning by remember{ mutableStateOf(false)}
         Column (
@@ -120,8 +117,8 @@ class Playmanager(
                 modifier = Modifier.height(63.dp),
                 shape = CircleShape,
                 onClick = {
-                timerRunning = !timerRunning
-            }){
+                    timerRunning = !timerRunning
+                }){
                 if(timerRunning){
                     Text("||", fontWeight = FontWeight(1000),fontSize = 20.sp)
                 }
@@ -133,7 +130,7 @@ class Playmanager(
     }
 
     @Composable
-    fun TimerTopCenter(){
+    private fun TimerTopCenter(){
         Box(
             modifier = Modifier.fillMaxWidth(0.5f).height(100.dp)
                 .background(Color.Blue.copy(alpha = 0.5f)),
@@ -146,44 +143,49 @@ class Playmanager(
         }
     }
 
-@Composable
-fun RowScope.TeamArea(
-    label:String,
-    teamName:String,
-    onGoalButtonClick:()->Unit,
-    onPenaltyButtonClick:()->Unit,
-    onTimeoutButtonClick:()->Unit,
-) {
-    Column(
-        modifier = Modifier.weight(1.25f).fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+    @Composable
+    private fun RowScope.TeamArea(
+        label:String,
+        teamName:String,
+        onGoalButtonClick:()->Unit,
+        onPenaltyButtonClick:()->Unit,
+        onTimeoutButtonClick:()->Unit,
     ) {
-        //TODO Label (Heim/Gast)
-        Text(label)
-        //TODO Textfeld (Teamname)
-        Text(
-            // TODO Schrift grösser und breiter machen
-            teamName
-        )
-        //TODO Button (Goal)
-        Button(
-            onClick = { onGoalButtonClick() }
-        ){
-            Text(text = "Goal")
-        }
-        //TODO Button (Strafe)
-        Button(
-            onClick = { onPenaltyButtonClick() }
-        ){
-            Text(text = "Strafe")
-        }
-        //TODO Button (Timeout)
-        Button(
-            onClick = { onTimeoutButtonClick() }
-        ){
-            Text(text = "Timeout")
+        Column(
+            modifier = Modifier.weight(1.25f).fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            //TODO Label (Heim/Gast)
+            Text(label)
+            //TODO Textfeld (Teamname)
+            Text(
+                // TODO Schrift grösser und breiter machen
+                teamName
+            )
+            //TODO Button (Goal)
+            Button(
+                onClick = { onGoalButtonClick() }
+            ){
+                Text(text = "Goal")
+            }
+            //TODO Button (Strafe)
+            Button(
+                onClick = { onPenaltyButtonClick() }
+            ){
+                Text(text = "Strafe")
+            }
+            //TODO Button (Timeout)
+            Button(
+                onClick = { onTimeoutButtonClick() }
+            ){
+                Text(text = "Timeout")
+            }
         }
     }
+
 }
+
+
+
 
