@@ -155,7 +155,7 @@ class ChooseMatchScreen (
                         colors = ButtonDefaults.buttonColors(backgroundColor = if (appViewModel.team1Ready && appViewModel.team2Ready) Color.Green else Color.Red),
                         onClick = {
                             if (appViewModel.team1Ready && appViewModel.team2Ready){
-                                navigator.push((GameManager(appViewModel.currentMatch!!)))
+                                navigator.push((GameManager(appViewModel)))
                             } else {
                                 showAlertBoxMatch = true
                             }
