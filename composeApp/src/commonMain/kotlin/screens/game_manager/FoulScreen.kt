@@ -1,17 +1,15 @@
 package screens.game_manager
 
 import AppViewModel
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,11 +23,13 @@ import cafe.adriel.voyager.core.screen.Screen
 import data.Team
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.input.key.Key
-import androidx.compose.ui.text.style.TextAlign
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import data.Player
+import pre_sets.foulTimes
+import ui_components.AlertBox
 import ui_components.GenericDropdownMenu
+import ui_components.IncrementerWithDisplay
 import ui_components.ScreenWithKeyInput
 
 class FoulScreen(
@@ -39,11 +39,9 @@ class FoulScreen(
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        var faulChosen by remember { mutableStateOf(false) }
+        var playerChosen by remember { mutableStateOf(false) }
         var dropDownValueFaul: Player? by remember { mutableStateOf(null) }
         var showAlertBox by remember { mutableStateOf(false) }
-        var penaltyTime by remember { mutableStateOf("") }
-        val test = ""
 
 
         ScreenWithKeyInput(
@@ -52,104 +50,76 @@ class FoulScreen(
             ),
             modifier = Modifier.fillMaxSize()
         ) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                if (showAlertBox) {
-                    AlertDialog(
-                        onDismissRequest = { showAlertBox = false },
-                        buttons = {
-                            Box(
-                                contentAlignment = Alignment.Center,
-                                modifier = Modifier.fillMaxWidth(),
-                            ) {
-                                Button(
-                                    onClick = {
-                                        showAlertBox = false
-                                    }
-                                ) {
-                                    Text(text = "Close")
-                                }
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+                ) {
+
+                AlertBox(
+                    showAlertBox = showAlertBox,
+                    errorMessage = "Choose a faul maker and how long the penalty lasts"
+                ) {
+                    showAlertBox = false
+                }
+                Column(
+                    modifier = Modifier.fillMaxWidth(0.5f),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                ) {
+                    Text(text = team.name, fontSize = 30.sp)
+                    GenericDropdownMenu(
+                        modifier = Modifier.height(56.dp).fillMaxWidth(),
+                        iterable = team.members,
+                        value = if (dropDownValueFaul == null) {
+                            "Choose who made a Faul"
+                        } else {
+                            "${dropDownValueFaul!!.firstName} ${dropDownValueFaul!!.name}, Number: ${dropDownValueFaul!!.playerNumber}"
+                        },
+                        label = "Faul",
+                        toString = { "${it.playerNumber} ${it.firstName} ${it.name}" },
+                        onItemClick = { match ->
+                            dropDownValueFaul = match
+                            playerChosen = true
+                        },
+                    )
+                    IncrementerWithDisplay(
+                        modifier = Modifier.fillMaxWidth().height(56.dp),
+                        minIndex = 0,
+                        decrementSymbol = { Text(text="<", fontSize = 40.sp) },
+                        incrementSymbol = { Text(text = ">", fontSize = 40.sp) },
+                        maxIndex = foulTimes.lastIndex,
+                        display = { foulTimes[it].toString()}
+                    )
+                    //TextField(
+                    //    singleLine = true,
+                    //    onValueChange = { value ->
+                    //        penaltyTime = value.filter { it.isDigit() }
+                    //    }, //penaltyTime = it
+                    //    value = penaltyTime,
+                    //    label = { Text(text = "Faul Time") })
+
+
+                    Button(
+                        onClick = {
+                            if (playerChosen) {
+                                navigator.push((GameManager(appViewModel = appViewModel)))
+                            } else {
+                                showAlertBox = true
                             }
                         },
-                        title = {
-                            Text(
-                                text = "Error",
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Center
-                            )
-                        },
-                        text = {
-                            Text(
-                                text = "Choose a faul maker and how long the penalty lasts",
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Center
-                            )
-                        },
-                        contentColor = Color.Red,
-                        modifier = Modifier.size(width = 300.dp, height = 200.dp),
-                        backgroundColor = Color.Gray
-                    )
-                }
-
-                Column(modifier = Modifier.align(alignment = Alignment.Center)) {
-                    Box() {
-                        Text(text = team.name, fontSize = 30.sp)
-                    }
-                    Box() {
-                        GenericDropdownMenu(
-                            modifier = Modifier.height(56.dp),
-                            iterable = team.members,
-                            value = if (dropDownValueFaul == null) {
-                                "Choose who made Faul"
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = if (playerChosen) {
+                                Color.Green
                             } else {
-                                "${dropDownValueFaul!!.firstName} ${dropDownValueFaul!!.name}, Number: ${dropDownValueFaul!!.playerNumber}"
-                            },
-                            label = "Faul",
-                            toString = {"${it.firstName} ${it.name}"},
-                            onItemClick = { match ->
-                                dropDownValueFaul = match
-                                faulChosen = true
-                            },
+                                Color.Red
+                            }
                         )
-
-
-                    }
-
-                    Box() {
-                        TextField(
-                            singleLine = true,
-                            onValueChange = { value ->
-                                penaltyTime = value.filter { it.isDigit() }
-                            }, //penaltyTime = it
-                            value = penaltyTime,
-                            label = { Text(text = "Faul Time") })
-                    }
-                    Box() {
-                        Button(
-                            onClick = {
-                                if (faulChosen && !penaltyTime.equals(test)) {
-                                    navigator.push((GameManager(appViewModel = appViewModel)))
-                                } else {
-                                    showAlertBox = true
-                                }
-                            },
-                            colors = ButtonDefaults.buttonColors(
-                                backgroundColor = if (faulChosen && !penaltyTime.equals(test)) {
-                                    Color.Green
-                                } else {
-                                    Color.Red
-                                }
-                            )
-                        ) {
-
-                            Text(text = "Send")
-                        }
+                    ) {
+                        Text(text = "confirm")
                     }
                 }
             }
         }
     }
 
-    public fun doSomthin() {
 
-    }
 }

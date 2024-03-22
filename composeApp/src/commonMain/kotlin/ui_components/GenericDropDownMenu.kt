@@ -7,6 +7,8 @@ import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
@@ -25,8 +27,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalStdlibApi::class,
@@ -43,27 +48,23 @@ fun <T> GenericDropdownMenu(
 ){
     var expanded by remember { mutableStateOf(false) }
 
-    var icon = if(expanded){
-        Icons.Filled.KeyboardArrowUp
+    var bottomLineThickness: Dp
+    var icon : ImageVector
+    var labelColor: Color
+    var bottomLineColor:Color
+
+    if(expanded){
+        icon = Icons.Filled.KeyboardArrowUp
+        labelColor = MaterialTheme.colors.primary.copy(ContentAlpha.high)
+        bottomLineColor = MaterialTheme.colors.primary
+        bottomLineThickness = 2.dp
     }else{
-        Icons.Filled.KeyboardArrowDown
+        icon = Icons.Filled.KeyboardArrowDown
+        bottomLineColor = MaterialTheme.colors.onSurface.copy(ContentAlpha.medium)
+        labelColor = MaterialTheme.colors.onSurface.copy(ContentAlpha.medium)
+        bottomLineThickness = 1.dp
     }
 
-    var labelColor = if (expanded){
-        MaterialTheme.colors.primary.copy(ContentAlpha.high)
-    }else{
-        MaterialTheme.colors.onSurface.copy(ContentAlpha.medium)
-    }
-    var bottomLineColor = if (expanded){
-        MaterialTheme.colors.primary
-    }else{
-        MaterialTheme.colors.onSurface.copy(ContentAlpha.medium)
-    }
-    var bottomLineThickness = if(expanded){
-        2.dp
-    }else{
-        1.dp
-    }
     Box(modifier=modifier){
         TextField(
             enabled = false,
@@ -73,6 +74,7 @@ fun <T> GenericDropdownMenu(
 
             ),
             modifier = Modifier
+                .fillMaxSize()
                 .focusable(enabled = true)
                 .clickable {expanded = !expanded}
                 .indicatorLine(

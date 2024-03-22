@@ -43,6 +43,7 @@ class ChooseTeamScreen (private val appViewModel: AppViewModel):Screen {
                 verticalArrangement = Arrangement.spacedBy(40.dp),
 
             ) {
+
                 if (showAlertBox){
                     AlertDialog(
                         onDismissRequest = { showAlertBox = false},

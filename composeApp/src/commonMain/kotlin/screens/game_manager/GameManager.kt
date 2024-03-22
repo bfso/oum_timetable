@@ -38,12 +38,16 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import screens.ChooseMatchScreen
+import ui_components.IncrementerWithDisplay
 
-val containerColor: Color = Color.Blue.copy(alpha = 0.3f)
 
 class GameManager(
     val appViewModel: AppViewModel
 ) : Screen {
+    companion object{
+        val containerColor: Color = Color.Blue.copy(alpha = 0.3f)
+    }
+
 
 
     @Composable
@@ -85,45 +89,51 @@ class GameManager(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            Row(
+
+            IncrementerWithDisplay(
                 modifier = Modifier.fillMaxWidth().height(56.dp),
-                horizontalArrangement = Arrangement.spacedBy(5.dp)
-            ) {
-
-                // MinusSign
-                Button(
-                    enabled = periodCounter > 1,
-                    modifier = Modifier.weight(1f).fillMaxSize(),
-                    onClick = { periodCounter-- },
-                    shape = RoundedCornerShape(CornerSize(15.dp))
-                ) {
-                    Text("-", fontSize = 30.sp)
-                }
-
-                // PeriodeDisplay
-                Box(
-                    modifier = Modifier.background(
-                        color = containerColor,
-                        shape = RoundedCornerShape(corner = CornerSize(15.dp))
-
-                    )
-                        .weight(1f)
-                        .fillMaxHeight(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = "$periodCounter", fontSize = 30.sp)
-                }
-
-                // PlusSign
-                Button(
-                    modifier = Modifier.weight(1f).fillMaxSize(),
-                    onClick = { periodCounter++ },
-                    shape = RoundedCornerShape(CornerSize(15.dp))
-                ) {
-                    Text("+", fontSize = 30.sp)
-                }
-
-            }
+                minIndex = 1,
+                startingIndex = 1
+            )
+            //Row(
+            //    modifier = Modifier.fillMaxWidth().height(56.dp),
+            //    horizontalArrangement = Arrangement.spacedBy(5.dp)
+            //) {
+//
+            //    // MinusSign
+            //    Button(
+            //        enabled = periodCounter > 1,
+            //        modifier = Modifier.weight(1f).fillMaxSize(),
+            //        onClick = { periodCounter-- },
+            //        shape = RoundedCornerShape(CornerSize(15.dp))
+            //    ) {
+            //        Text("-", fontSize = 30.sp)
+            //    }
+//
+            //    // PeriodeDisplay
+            //    Box(
+            //        modifier = Modifier.background(
+            //            color = containerColor,
+            //            shape = RoundedCornerShape(corner = CornerSize(15.dp))
+//
+            //        )
+            //            .weight(1f)
+            //            .fillMaxHeight(),
+            //        contentAlignment = Alignment.Center
+            //    ) {
+            //        Text(text = "$periodCounter", fontSize = 30.sp)
+            //    }
+//
+            //    // PlusSign
+            //    Button(
+            //        modifier = Modifier.weight(1f).fillMaxSize(),
+            //        onClick = { periodCounter++ },
+            //        shape = RoundedCornerShape(CornerSize(15.dp))
+            //    ) {
+            //        Text("+", fontSize = 30.sp)
+            //    }
+//
+            //}
             //TODO PlayButton
 
             Row(

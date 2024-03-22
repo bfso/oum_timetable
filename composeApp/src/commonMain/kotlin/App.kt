@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.navigator.Navigator
 import data.DataTest
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import screens.game_manager.GameManager
 import screens.login.LoginScreen
 
 @OptIn(ExperimentalResourceApi::class)
@@ -12,10 +13,13 @@ import screens.login.LoginScreen
 fun App() {
     MaterialTheme {
         val appViewModel = AppViewModel(DataTest())
+        appViewModel.currentMatch = appViewModel.matches[0]
         Scaffold (
             modifier = Modifier
         ){
-            Navigator(screen = LoginScreen(appViewModel = appViewModel))
+            //Navigator(screen = LoginScreen(appViewModel = appViewModel))
+            Navigator(screen = GameManager(appViewModel = appViewModel))
+
             //{
             //    SlideTransition(it)
             //}
