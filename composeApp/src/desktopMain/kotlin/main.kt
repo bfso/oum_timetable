@@ -6,9 +6,11 @@ import data.Match
 import data.Team
 import screens.ChooseTeamScreen
 import screens.TeamOverviewScreen
+import java.awt.Dimension
 
 fun main() = application {
     Window(onCloseRequest = ::exitApplication, title = "oum_timetable") {
+        window.minimumSize = Dimension(800,500)
         App()
     }
 }
