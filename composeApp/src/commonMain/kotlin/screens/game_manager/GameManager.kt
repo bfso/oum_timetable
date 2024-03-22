@@ -37,7 +37,6 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import data.Match
 import screens.ChooseMatchScreen
 
 val containerColor: Color = Color.Blue.copy(alpha = 0.3f)
@@ -62,7 +61,7 @@ class GameManager(
                     label = "Heim",
                     teamName = appViewModel.currentMatch?.team1?.name?:"Error",
                     onGoalButtonClick = { },
-                    onPenaltyButtonClick = { println("Heimteam Strafe Button funktionert") },
+                    onPenaltyButtonClick = {navigator.push(FoulScreen(team = appViewModel.currentMatch!!.team1, appViewModel = appViewModel)) },
                     onTimeoutButtonClick = { println("Heimteam Timeout Button funktionert") }
                 )
                 ControlArea(navigator = navigator)
@@ -70,7 +69,7 @@ class GameManager(
                     label = "Gast",
                     teamName = appViewModel.currentMatch?.team2?.name?:"Error",
                     onGoalButtonClick = { },
-                    onPenaltyButtonClick = { println("Gastteam Strafe Button funktionert") },
+                    onPenaltyButtonClick = { navigator.push(FoulScreen(team = appViewModel.currentMatch!!.team2, appViewModel = appViewModel)) },
                     onTimeoutButtonClick = { println("Gastteam Timeout Button funktionert") }
                 )
             }
@@ -154,6 +153,9 @@ class GameManager(
                     modifier = Modifier.height(63.dp),
                     shape = CircleShape,
                     onClick = {
+                        appViewModel.currentMatch!!.finished = true
+                        appViewModel.currentMatch = null
+
                         navigator.push(ChooseMatchScreen(appViewModel = appViewModel))                     }
                 ) {
                     Icon(imageVector = Icons.Filled.Done, contentDescription = null)

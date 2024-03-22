@@ -28,43 +28,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
-import data.Match
-
-//@Composable
-//fun DropdownMenu(options: List<String>, onChange: (String)->Unit) {
-//    var expanded by mutableStateOf(false)
-//    Box {
-//        TextField(
-//            value = " ",
-//            onValueChange = {}
-//        )
-//        androidx.compose.material.DropdownMenu(
-//            expanded = expanded,
-//            onDismissRequest = {expanded = false},
-//            ){
-//            options.forEach{
-//                DropdownMenuItem(
-//                    onClick = {}
-//                ){
-//                    Text(text = it)
-//                }
-//            }
-//
-//
-//        }
-//    }
-//}
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalStdlibApi::class,
     ExperimentalMaterialApi::class
 )
 @Composable
-fun DropdownMenuCustom(
+fun <T> GenericDropdownMenu(
     modifier: Modifier = Modifier,
-    matches:List<Match>,
+    iterable: Iterable<T>,
     value:String,
     label:String,
-    onItemClick: (Match)->Unit
+    toString:(T)->String,
+    onItemClick: (T)->Unit
 ){
     var expanded by remember { mutableStateOf(false) }
 
@@ -135,14 +110,14 @@ fun DropdownMenuCustom(
             expanded = expanded,
             onDismissRequest = {expanded = false},
         ){
-            matches.forEach{
+            iterable.forEach{
                 DropdownMenuItem(
                     onClick = {
                         onItemClick(it)
                         expanded = false
                     }
                 ){
-                    Text(text = "${it.team1.name} vs. ${it.team2.name}")
+                    Text(text = toString(it))
                 }
             }
         }

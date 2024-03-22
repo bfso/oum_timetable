@@ -1,16 +1,12 @@
-package screens
+package screens.game_manager
 
-import ui_components.DropdownMenuPlayers
-import androidx.compose.foundation.layout.Arrangement
+import AppViewModel
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -32,13 +28,13 @@ import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.text.style.TextAlign
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import data.Match
 import data.Player
+import ui_components.GenericDropdownMenu
 import ui_components.ScreenWithKeyInput
 
 class FoulScreen(
     val team: Team,
-    val match: Match
+    val appViewModel: AppViewModel
 ) : Screen {
     @Composable
     override fun Content() {
@@ -96,18 +92,19 @@ class FoulScreen(
 
                 Column(modifier = Modifier.align(alignment = Alignment.Center)) {
                     Box() {
-                        Text(text = "${team.name}", fontSize = 30.sp)
+                        Text(text = team.name, fontSize = 30.sp)
                     }
                     Box() {
-                        DropdownMenuPlayers(
+                        GenericDropdownMenu(
                             modifier = Modifier.height(56.dp),
-                            players = team.members,
+                            iterable = team.members,
                             value = if (dropDownValueFaul == null) {
                                 "Choose who made Faul"
                             } else {
                                 "${dropDownValueFaul!!.firstName} ${dropDownValueFaul!!.name}, Number: ${dropDownValueFaul!!.playerNumber}"
                             },
                             label = "Faul",
+                            toString = {"${it.firstName} ${it.name}"},
                             onItemClick = { match ->
                                 dropDownValueFaul = match
                                 faulChosen = true
@@ -130,7 +127,7 @@ class FoulScreen(
                         Button(
                             onClick = {
                                 if (faulChosen && !penaltyTime.equals(test)) {
-                                    navigator.push((Playmanager(match)))
+                                    navigator.push((GameManager(appViewModel = appViewModel)))
                                 } else {
                                     showAlertBox = true
                                 }

@@ -1,7 +1,6 @@
 package screens
 
 import AppViewModel
-import ui_components.DropdownMenuMatches
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,18 +29,18 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import data.Match
-import data.Team
 import androidx.compose.ui.input.key.Key
+import ui_components.GenericDropdownMenu
 import ui_components.ScreenWithKeyInput
 
-class HomeScreen (
+class ChooseMatchScreen (
     val appViewModel: AppViewModel
 ): Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         var showAlertBox by remember { mutableStateOf(false) }
-        var showAlertBoxMatch by remember { mutableStateOf( false ) }
+        //var showAlertBoxMatch by remember { mutableStateOf( false ) }
 
 
         ScreenWithKeyInput (
@@ -122,15 +121,16 @@ class HomeScreen (
                     var dropDownValue:Match? by remember { mutableStateOf(null)}
                     var bothTeamsChecked by remember { mutableStateOf(false)}
 
-                    DropdownMenuMatches(
+                    GenericDropdownMenu(
                         modifier = Modifier.height(56.dp),
-                        matches = appViewModel.matches,
+                        iterable = appViewModel.matches.filter { !it.finished },
                         value = if(appViewModel.currentMatch == null){
                             "Choose a Match"
                                 }else{
                                     "${appViewModel.currentMatch!!.team1.name} vs. ${appViewModel.currentMatch!!.team2.name}"
                                      },
                         label = "Match",
+                        toString = {"${it.team1.name} vs. ${it.team2.name}"},
                         onItemClick = {
                                 match ->
                             dropDownValue = match
