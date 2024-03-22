@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import screens.check_player_attendance.CheckPlayerAttendanceScreen
 import ui_components.ScreenWithKeyInput
 
 class ChooseTeamScreen (private val appViewModel: AppViewModel):Screen {
@@ -40,7 +41,7 @@ class ChooseTeamScreen (private val appViewModel: AppViewModel):Screen {
                 Button(
                     enabled = !appViewModel.team1Ready,
                     onClick = {
-                              navigator.push(TeamOverviewScreen(appViewModel = appViewModel, confirmTeamChecked =  {
+                              navigator.push(CheckPlayerAttendanceScreen(appViewModel = appViewModel, confirmTeamChecked =  {
                                   //TODO Somehow this schould change the boolean in the viewmodel when the button on the next screen is pressed
                                   appViewModel.team1Ready = true
                               }))
@@ -55,7 +56,7 @@ class ChooseTeamScreen (private val appViewModel: AppViewModel):Screen {
                 Button(
                     enabled = !appViewModel.team2Ready,
                     onClick = {
-                        navigator.push(TeamOverviewScreen(appViewModel = appViewModel, confirmTeamChecked =  {
+                        navigator.push(CheckPlayerAttendanceScreen(appViewModel = appViewModel, confirmTeamChecked =  {
                             appViewModel.team2Ready = true
                         }))
                     },

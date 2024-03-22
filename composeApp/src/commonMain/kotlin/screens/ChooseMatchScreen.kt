@@ -31,9 +31,10 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import data.Match
 import androidx.compose.ui.input.key.Key
+import screens.game_manager.GameManager
 import ui_components.ScreenWithKeyInput
 
-class HomeScreen (
+class ChooseMatchScreen (
     val appViewModel: AppViewModel
 ): Screen {
     @Composable

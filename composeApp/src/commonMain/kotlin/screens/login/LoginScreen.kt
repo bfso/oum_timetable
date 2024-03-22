@@ -35,8 +35,7 @@ import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import screens.ForgotPasswordScreen
-import screens.HomeScreen
+import screens.ChooseMatchScreen
 import ui_components.ScreenWithKeyInput
 
 class LoginScreen(
@@ -145,7 +144,7 @@ class LoginScreen(
 
     private fun validateLoginData(navigator:Navigator) {
         if(login.login(username = loginScreenModel.username, password =  loginScreenModel.password)){
-            navigator.push(HomeScreen(appViewModel = appViewModel))
+            navigator.push(ChooseMatchScreen(appViewModel = appViewModel))
         }
     }
 }

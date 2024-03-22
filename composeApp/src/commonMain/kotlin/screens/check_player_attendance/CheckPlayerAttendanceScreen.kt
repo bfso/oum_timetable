@@ -1,4 +1,4 @@
-package screens
+package screens.check_player_attendance
 
 import AppViewModel
 import androidx.compose.foundation.BorderStroke
@@ -31,7 +31,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import data.Player
 import ui_components.ScreenWithKeyInput
 
-class TeamOverviewScreen(
+class CheckPlayerAttendanceScreen(
     val appViewModel: AppViewModel,
     private val confirmTeamChecked: () -> Unit
 ) : Screen {

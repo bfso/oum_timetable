@@ -1,4 +1,4 @@
-package screens
+package screens.game_manager
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -156,9 +156,9 @@ class GameManager(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            //TODO Label (Heim/Gast)
+            //Label (Heim/Gast)
             Text(label)
-            //TODO Textfeld (Teamname)
+            //Textfeld (Teamname)
             Text(
                 // TODO Schrift grösser und breiter machen
                 teamName
