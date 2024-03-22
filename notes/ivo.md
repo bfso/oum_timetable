@@ -14,7 +14,7 @@
 * Welche Struktur soll die Verbindung zum Webserver haben? Rest API (GET/POST json)? WebSocket?
 
 
-*WIE FUNKTIONIEREN VOYAGER SCREEN MODELS
+* WIE FUNKTIONIEREN VOYAGER SCREEN MODELS
 
 ## Aufbau
 
