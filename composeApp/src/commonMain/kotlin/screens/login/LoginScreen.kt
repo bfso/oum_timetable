@@ -16,6 +16,8 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -97,10 +99,9 @@ class LoginScreen(
                         trailingIcon = {
                             //TODO find a better icon that works on both platforms
                             val image = if (loginScreenModel.passwordVisible)
-                                Icons.Filled.Lock
-                            else Icons.Filled.Lock
-
-                            // Please provide localized description for accessibility services
+                                Icons.Filled.Visibility
+                            else
+                                Icons.Filled.VisibilityOff
                             val description = if (loginScreenModel.passwordVisible) "Hide password" else "Show password"
 
                             IconButton(onClick = {loginScreenModel.passwordVisible = !loginScreenModel.passwordVisible}){

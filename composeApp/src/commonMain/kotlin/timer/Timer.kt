@@ -25,7 +25,7 @@ class Timer(
 
     private var coroutineScope = CoroutineScope(Dispatchers.Main)
 
-    var isRunning = false
+    var isRunning by mutableStateOf(false)
         private set
 
     private var timeMillis = durationMillis

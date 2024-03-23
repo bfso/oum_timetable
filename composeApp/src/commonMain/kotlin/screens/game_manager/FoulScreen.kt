@@ -4,12 +4,17 @@ import AppViewModel
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,31 +41,24 @@ class FoulScreen(
     val team: Team,
     val appViewModel: AppViewModel
 ) : Screen {
+    val alertBox = AlertBox("Choose a foul maker and how long the penalty should last")
+
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        var playerChosen by remember { mutableStateOf(false) }
-        var dropDownValueFaul: Player? by remember { mutableStateOf(null) }
-        var showAlertBox by remember { mutableStateOf(false) }
-
-
+        var player: Player? by remember { mutableStateOf(null) }
         ScreenWithKeyInput(
             keyEvents = mapOf(
                 Pair(Key.Escape) { navigator.pop() }
             ),
             modifier = Modifier.fillMaxSize()
         ) {
+            alertBox()
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
-                ) {
+            ) {
 
-                AlertBox(
-                    showAlertBox = showAlertBox,
-                    errorMessage = "Choose a faul maker and how long the penalty lasts"
-                ) {
-                    showAlertBox = false
-                }
                 Column(
                     modifier = Modifier.fillMaxWidth(0.5f),
                     verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -69,57 +67,74 @@ class FoulScreen(
                     GenericDropdownMenu(
                         modifier = Modifier.height(56.dp).fillMaxWidth(),
                         iterable = team.members,
-                        value = if (dropDownValueFaul == null) {
-                            "Choose who made a Faul"
+                        value = if (player == null) {
+                            "Choose who made a Foul"
                         } else {
-                            "${dropDownValueFaul!!.firstName} ${dropDownValueFaul!!.name}, Number: ${dropDownValueFaul!!.playerNumber}"
+                            "${player!!.firstName} ${player!!.name}, Number: ${player!!.playerNumber}"
                         },
-                        label = "Faul",
+                        label = "Player",
                         toString = { "${it.playerNumber} ${it.firstName} ${it.name}" },
-                        onItemClick = { match ->
-                            dropDownValueFaul = match
-                            playerChosen = true
-                        },
+                        onItemClick = { player = it },
                     )
                     IncrementerWithDisplay(
                         modifier = Modifier.fillMaxWidth().height(56.dp),
                         minIndex = 0,
-                        decrementSymbol = { Text(text="<", fontSize = 40.sp) },
-                        incrementSymbol = { Text(text = ">", fontSize = 40.sp) },
-                        maxIndex = foulTimes.lastIndex,
-                        display = { foulTimes[it].toString()}
-                    )
-                    //TextField(
-                    //    singleLine = true,
-                    //    onValueChange = { value ->
-                    //        penaltyTime = value.filter { it.isDigit() }
-                    //    }, //penaltyTime = it
-                    //    value = penaltyTime,
-                    //    label = { Text(text = "Faul Time") })
-
-
-                    Button(
-                        onClick = {
-                            if (playerChosen) {
-                                navigator.push((GameManager(appViewModel = appViewModel)))
-                            } else {
-                                showAlertBox = true
-                            }
+                        decrementSymbol = {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = "",
+                                modifier = Modifier.fillMaxSize()
+                            )
                         },
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = if (playerChosen) {
-                                Color.Green
-                            } else {
-                                Color.Red
-                            }
+                        incrementSymbol = {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                                contentDescription = "",
+                                modifier = Modifier.fillMaxSize()
+                            )
+                        },
+                        maxIndex = foulTimes.lastIndex,
+                        display = { "${foulTimes[it]} min" }
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(
+                            10.dp,
+                            alignment = Alignment.End
                         )
                     ) {
-                        Text(text = "confirm")
+                        Button(
+                            onClick = {
+                                if (player == null) {
+                                    alertBox.show()
+                                } else {
+                                    navigator.pop()
+                                }
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                backgroundColor = if (player == null) {
+                                    Color.Red
+                                } else {
+                                    Color.Green
+                                }
+                            )
+                        ) {
+                            Text(text = "confirm")
+                        }
+                        Button(
+                            onClick = {
+                                navigator.pop()
+                            }
+                        ) {
+                            Text(text = "cancel")
+                        }
                     }
+
+
                 }
             }
         }
     }
-
-
 }
+
+

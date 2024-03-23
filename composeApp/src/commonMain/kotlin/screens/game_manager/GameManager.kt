@@ -49,6 +49,8 @@ class GameManager(
 
     var timerRunning by mutableStateOf(false)
     val timer: Timer = Timer(durationMillis = 20.minutes, onTimerFinish = { timerRunning = false })
+    val timeoutTimer: Timer = Timer(format = "ss:SS", durationMillis = 30.seconds)
+
 
     companion object {
         val containerColor: Color = Color.Blue.copy(alpha = 0.3f)
@@ -180,14 +182,14 @@ class GameManager(
 
     @Composable
     private fun RowScope.TeamArea(
-        label: String,
-        teamName: String,
-        onGoalButtonClick: () -> Unit,
-        onPenaltyButtonClick: () -> Unit,
-        onTimeoutButtonClick: () -> Unit,
+        label: String="",
+        teamName: String = "",
+        onGoalButtonClick: () -> Unit = {},
+        onPenaltyButtonClick: () -> Unit={},
+        onTimeoutButtonClick: () -> Unit={},
+        //timeoutTimer: Timer = Timer(format = "ss:SS", durationMillis = 30.seconds),
+        timeoutAvailable: Boolean = true
     ) {
-        val timeoutTimer = Timer(format = "ss:SS", durationMillis = 30.seconds)
-        var timeoutAvailable by remember { mutableStateOf(true) }
 
         Column(
             modifier = Modifier.weight(1.25f).fillMaxSize(),
@@ -259,9 +261,6 @@ class GameManager(
                 enabled = timeoutAvailable,
                 modifier = Modifier.width(120.dp),
                 onClick = {
-                    timeoutAvailable = false
-                    timeoutTimer.start()
-
                     onTimeoutButtonClick()
                 }
             ) {

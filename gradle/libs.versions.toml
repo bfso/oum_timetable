@@ -63,6 +63,7 @@ voyager-transitions-1_0_0 = { module = "cafe.adriel.voyager:voyager-transitions"
 androidx-material3-desktop = { group = "androidx.compose.material3", name = "material3-desktop", version = "1.2.1" }
 androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version = "1.2.1" }
 androidx-foundation-desktop = { group = "androidx.compose.foundation", name = "foundation-desktop", version.ref = "compose" }
+androidx-compose-material-icons-extended={ group = "androidx.compose.material", name = "material-icons-extended", version.ref = "compose" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

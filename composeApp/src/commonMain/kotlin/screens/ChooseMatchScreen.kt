@@ -36,18 +36,12 @@ import ui_components.GenericDropdownMenu
 class ChooseMatchScreen(
     val appViewModel: AppViewModel
 ) : Screen {
+    val alertBox = AlertBox("Pick a Match")
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        var showAlertBox by remember { mutableStateOf(false) }
+        alertBox()
 
-
-        AlertBox(
-            showAlertBox = showAlertBox,
-            errorMessage = "Pick a Match"
-        ) {
-            showAlertBox = false
-        }
 
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Column(
@@ -78,7 +72,7 @@ class ChooseMatchScreen(
 
                             navigator.push(ChooseTeamScreen(appViewModel))
                         } else {
-                            showAlertBox = true
+                            alertBox.show()
                         }
                     }) {
                     Text(text = "Anwesenheitscheck")

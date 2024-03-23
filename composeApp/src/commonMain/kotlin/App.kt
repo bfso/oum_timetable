@@ -14,12 +14,14 @@ import timer.TimerTestScreen
 fun App() {
     MaterialTheme {
         val appViewModel = AppViewModel(DataTest())
-        appViewModel.currentMatch = appViewModel.matches[0]
+
+        //TODO remove these once finished
+        //appViewModel.currentMatch = appViewModel.matches[0]
         Scaffold (
             modifier = Modifier
         ){
-            //Navigator(screen = LoginScreen(appViewModel = appViewModel))
-            Navigator(screen = GameManager(appViewModel = appViewModel))
+            Navigator(screen = LoginScreen(appViewModel = appViewModel))
+            //Navigator(screen = GameManager(appViewModel = appViewModel))
             //Navigator(screen = TimerTestScreen())
 
 
