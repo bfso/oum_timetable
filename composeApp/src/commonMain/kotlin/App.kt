@@ -7,6 +7,7 @@ import data.DataTest
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import screens.game_manager.GameManager
 import screens.login.LoginScreen
+import timer.TimerTestScreen
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
@@ -19,6 +20,8 @@ fun App() {
         ){
             //Navigator(screen = LoginScreen(appViewModel = appViewModel))
             Navigator(screen = GameManager(appViewModel = appViewModel))
+            //Navigator(screen = TimerTestScreen())
+
 
             //{
             //    SlideTransition(it)

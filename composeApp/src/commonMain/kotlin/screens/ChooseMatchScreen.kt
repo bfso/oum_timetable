@@ -51,9 +51,9 @@ class ChooseMatchScreen(
 
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Column(
+                modifier = Modifier.fillMaxWidth(0.5f),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(20.dp)
-
             ) {
                 var dropDownValue: Match? by remember { mutableStateOf(null) }
                 GenericDropdownMenu(

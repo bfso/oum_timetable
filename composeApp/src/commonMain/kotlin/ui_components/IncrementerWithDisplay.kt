@@ -31,12 +31,14 @@ fun IncrementerWithDisplay(
     //TODO These Composables don't get centered inside the Button
     decrementSymbol:@Composable RowScope.() -> Unit = {Text("-")},
     incrementSymbol:@Composable RowScope.() -> Unit = {Text("+")},
-    display:(Int)->String = {"$it"}
+    display:(Int)->String = {"$it"},
+    readIndex:(Int)->Unit = {}
     ) {
     minIndex?.let { if (it > startingIndex) throw IndexOutOfBoundsException() }
     maxIndex?.let { if (it < startingIndex) throw IndexOutOfBoundsException() }
 
     var index by remember{ mutableStateOf(startingIndex)}
+
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(5.dp)
@@ -67,4 +69,6 @@ fun IncrementerWithDisplay(
             content = incrementSymbol
         )
     }
+    readIndex(index)
+
 }

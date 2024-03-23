@@ -7,14 +7,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
@@ -38,16 +37,23 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import screens.ChooseMatchScreen
+import timer.Timer
+import timer.minutes
+import timer.seconds
 import ui_components.IncrementerWithDisplay
 
 
 class GameManager(
     val appViewModel: AppViewModel
 ) : Screen {
-    companion object{
-        val containerColor: Color = Color.Blue.copy(alpha = 0.3f)
-    }
 
+    var timerRunning by mutableStateOf(false)
+    val timer: Timer = Timer(durationMillis = 20.minutes, onTimerFinish = { timerRunning = false })
+
+    companion object {
+        val containerColor: Color = Color.Blue.copy(alpha = 0.3f)
+        val cornerRadius = 15.dp
+    }
 
 
     @Composable
@@ -57,23 +63,38 @@ class GameManager(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Spacer(modifier = Modifier.height(10.dp))
             TimerTopCenter()
             Row(
                 modifier = Modifier.fillMaxSize()
             ) {
                 TeamArea(
                     label = "Heim",
-                    teamName = appViewModel.currentMatch?.team1?.name?:"Error",
+                    teamName = appViewModel.currentMatch?.team1?.name ?: "Error",
                     onGoalButtonClick = { },
-                    onPenaltyButtonClick = {navigator.push(FoulScreen(team = appViewModel.currentMatch!!.team1, appViewModel = appViewModel)) },
+                    onPenaltyButtonClick = {
+                        navigator.push(
+                            FoulScreen(
+                                team = appViewModel.currentMatch!!.team1,
+                                appViewModel = appViewModel
+                            )
+                        )
+                    },
                     onTimeoutButtonClick = { println("Heimteam Timeout Button funktionert") }
                 )
                 ControlArea(navigator = navigator)
                 TeamArea(
                     label = "Gast",
-                    teamName = appViewModel.currentMatch?.team2?.name?:"Error",
+                    teamName = appViewModel.currentMatch?.team2?.name ?: "Error",
                     onGoalButtonClick = { },
-                    onPenaltyButtonClick = { navigator.push(FoulScreen(team = appViewModel.currentMatch!!.team2, appViewModel = appViewModel)) },
+                    onPenaltyButtonClick = {
+                        navigator.push(
+                            FoulScreen(
+                                team = appViewModel.currentMatch!!.team2,
+                                appViewModel = appViewModel
+                            )
+                        )
+                    },
                     onTimeoutButtonClick = { println("Gastteam Timeout Button funktionert") }
                 )
             }
@@ -83,7 +104,6 @@ class GameManager(
     @Composable
     private fun RowScope.ControlArea(navigator: Navigator) {
         var periodCounter by remember { mutableStateOf(1) }
-        var timerRunning by remember { mutableStateOf(false) }
         Column(
             modifier = Modifier.weight(1f).fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -93,47 +113,9 @@ class GameManager(
             IncrementerWithDisplay(
                 modifier = Modifier.fillMaxWidth().height(56.dp),
                 minIndex = 1,
-                startingIndex = 1
+                startingIndex = 1,
+                readIndex = { periodCounter = it }
             )
-            //Row(
-            //    modifier = Modifier.fillMaxWidth().height(56.dp),
-            //    horizontalArrangement = Arrangement.spacedBy(5.dp)
-            //) {
-//
-            //    // MinusSign
-            //    Button(
-            //        enabled = periodCounter > 1,
-            //        modifier = Modifier.weight(1f).fillMaxSize(),
-            //        onClick = { periodCounter-- },
-            //        shape = RoundedCornerShape(CornerSize(15.dp))
-            //    ) {
-            //        Text("-", fontSize = 30.sp)
-            //    }
-//
-            //    // PeriodeDisplay
-            //    Box(
-            //        modifier = Modifier.background(
-            //            color = containerColor,
-            //            shape = RoundedCornerShape(corner = CornerSize(15.dp))
-//
-            //        )
-            //            .weight(1f)
-            //            .fillMaxHeight(),
-            //        contentAlignment = Alignment.Center
-            //    ) {
-            //        Text(text = "$periodCounter", fontSize = 30.sp)
-            //    }
-//
-            //    // PlusSign
-            //    Button(
-            //        modifier = Modifier.weight(1f).fillMaxSize(),
-            //        onClick = { periodCounter++ },
-            //        shape = RoundedCornerShape(CornerSize(15.dp))
-            //    ) {
-            //        Text("+", fontSize = 30.sp)
-            //    }
-//
-            //}
             //TODO PlayButton
 
             Row(
@@ -148,7 +130,7 @@ class GameManager(
                     modifier = Modifier.height(63.dp),
                     shape = CircleShape,
                     onClick = {
-                        timerRunning = !timerRunning
+                        timerRunning = timer.toggleOnOff()
                     }
                 ) {
                     if (timerRunning) {
@@ -158,7 +140,7 @@ class GameManager(
                     }
                 }
 
-                // TODO Reset Button with Link to Startpage
+                // Reset Button with Link to Startpage
                 Button(
                     modifier = Modifier.height(63.dp),
                     shape = CircleShape,
@@ -166,7 +148,8 @@ class GameManager(
                         appViewModel.currentMatch!!.finished = true
                         appViewModel.currentMatch = null
 
-                        navigator.push(ChooseMatchScreen(appViewModel = appViewModel))                     }
+                        navigator.push(ChooseMatchScreen(appViewModel = appViewModel))
+                    }
                 ) {
                     Icon(imageVector = Icons.Filled.Done, contentDescription = null)
                 }
@@ -179,13 +162,18 @@ class GameManager(
     @Composable
     private fun TimerTopCenter() {
         Box(
-            modifier = Modifier.fillMaxWidth(0.5f).height(100.dp)
-                .background(containerColor),
+            modifier = Modifier
+                .fillMaxWidth(0.5f)
+                .height(100.dp)
+                .background(
+                    color = containerColor,
+                    shape = RoundedCornerShape(cornerRadius)
+                ),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 fontSize = 50.sp,
-                text = "20:00",
+                text = timer.formattedTime,
             )
         }
     }
@@ -198,7 +186,9 @@ class GameManager(
         onPenaltyButtonClick: () -> Unit,
         onTimeoutButtonClick: () -> Unit,
     ) {
+        val timeoutTimer = Timer(format = "ss:SS", durationMillis = 30.seconds)
         var timeoutAvailable by remember { mutableStateOf(true) }
+
         Column(
             modifier = Modifier.weight(1.25f).fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -210,7 +200,7 @@ class GameManager(
                 modifier = Modifier
                     .fillMaxWidth(0.9f)
                     .height(60.dp)
-                    .background(color = containerColor, shape = RoundedCornerShape(15.dp)),
+                    .background(color = containerColor, shape = RoundedCornerShape(cornerRadius)),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -246,7 +236,7 @@ class GameManager(
                         .size(40.dp)
                         .background(
                             color = containerColor,
-                            shape = RoundedCornerShape(15.dp)
+                            shape = RoundedCornerShape(cornerRadius)
                         ),
                     contentAlignment = Alignment.Center
                 ) {
@@ -263,7 +253,6 @@ class GameManager(
             }
 
             // TODO Strafanzeige als Kreis (Kreis ist ausgefüllt falls Strafe läuft)
-            //...
 
             // Button (Timeout)
             Button(
@@ -271,11 +260,28 @@ class GameManager(
                 modifier = Modifier.width(120.dp),
                 onClick = {
                     timeoutAvailable = false
+                    timeoutTimer.start()
+
                     onTimeoutButtonClick()
                 }
             ) {
                 Text(text = "Timeout")
             }
+            if (timeoutTimer.isRunning) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
+                        .background(
+                            color = containerColor,
+                            shape = RoundedCornerShape(cornerRadius)
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = timeoutTimer.formattedTime, fontSize = 30.sp)
+                }
+
+            }
+
 
             // TODO Strafanzeige als Kreis (Kreis ist ausgefüllt falls Strafe läuft)
             //...
@@ -285,3 +291,4 @@ class GameManager(
     }
 
 }
+
