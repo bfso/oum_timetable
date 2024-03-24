@@ -24,6 +24,7 @@ voyagerScreenmodel = "1.0.0"
 voyagerTabNavigator = "1.0.0"
 voyagerTransitions = "1.0.0"
 voyagerVersion = "1.0.0"
+koinVersion = "3.5.3"
 
 
 [libraries]
@@ -64,6 +65,7 @@ androidx-material3-desktop = { group = "androidx.compose.material3", name = "mat
 androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version = "1.2.1" }
 androidx-foundation-desktop = { group = "androidx.compose.foundation", name = "foundation-desktop", version.ref = "compose" }
 androidx-compose-material-icons-extended={ group = "androidx.compose.material", name = "material-icons-extended", version.ref = "compose" }
+koin-core = {module = "io.insert-koin:koin-core", version.ref = "koinVersion"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

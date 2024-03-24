@@ -15,12 +15,9 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.Key
@@ -31,50 +28,44 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import cafe.adriel.voyager.core.model.rememberNavigatorScreenModel
+import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import data.DataTest
 import screens.ChooseMatchScreen
+import ui_components.AlertBox
 import ui_components.ScreenWithKeyInput
 
 class LoginScreen(
-    val appViewModel: AppViewModel,
+    //val appViewModel: AppViewModel,
 ) : Screen {
-    val login: Login = LocalLoginTest
-
-
-
     override val key: ScreenKey = uniqueScreenKey
+    private lateinit var loginScreenModel:LoginScreenModel
 
-    val loginScreenModel by mutableStateOf(LoginScreenModel())
+
+
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     override fun Content() {
-        val navigator = LocalNavigator.currentOrThrow
-        //val loginScreenModel = navigator.rememberNavigatorScreenModel<LoginScreenModel>()
-
-
-
-
-
+        loginScreenModel = rememberScreenModel { LoginScreenModel() }
+        loginScreenModel.navigator = LocalNavigator.currentOrThrow
+        loginScreenModel.navigator.rememberNavigatorScreenModel { AppViewModel(DataTest()) }
 
         ScreenWithKeyInput(
             keyEvents = mapOf(
                 Pair(Key.Enter){
-                    try {
-                        validateLoginData(navigator)
-                        true
-                    }catch (_:Exception){
-                        false
-                    }
+                    loginScreenModel.validateLoginData()
                 }
             ),
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
+            loginScreenModel.alertBox()
             Box(modifier = Modifier) {
                 Column(
                     modifier = Modifier.fillMaxWidth(0.4f),
@@ -120,7 +111,7 @@ class LoginScreen(
                                     overrideDescendants = true
                                 )
                                 .clickable{
-                                    navigator.push(ForgotPasswordScreen())
+                                    loginScreenModel.goToForgotLoginScreen()
                                 }
                         )
                     }
@@ -128,11 +119,7 @@ class LoginScreen(
                         Button(
                             modifier = Modifier.pointerHoverIcon(icon = PointerIcon.Hand),
                             onClick = {
-                                try {
-                                    validateLoginData(navigator)
-                                } catch (_: Exception) {
-
-                                }
+                                    loginScreenModel.validateLoginData()
                             },
                         ) {
                             Text(text = "Login")
@@ -143,9 +130,4 @@ class LoginScreen(
         }
     }
 
-    private fun validateLoginData(navigator:Navigator) {
-        if(login.login(username = loginScreenModel.username, password =  loginScreenModel.password)){
-            navigator.push(ChooseMatchScreen(appViewModel = appViewModel))
-        }
-    }
 }

@@ -26,16 +26,20 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getNavigatorScreenModel
+import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import data.Match
 import screens.check_player_attendance.CheckPlayerAttendanceScreen
 import screens.game_manager.GameManager
 import ui_components.AlertBox
 import ui_components.ScreenWithKeyInput
 
-class ChooseTeamScreen (private val appViewModel: AppViewModel):Screen {
+class ChooseTeamScreen(val currentMatch: Match):Screen {
 
     val alertBox = AlertBox(errorMessage = "Please check the attendance of both teams first")
+
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
@@ -50,11 +54,10 @@ class ChooseTeamScreen (private val appViewModel: AppViewModel):Screen {
                 verticalArrangement = Arrangement.spacedBy(40.dp),
             ) {
                 Button(
-                    enabled = !appViewModel.team1Ready,
+                    enabled = !currentMatch.team1Ready,
                     onClick = {
-                              navigator.push(CheckPlayerAttendanceScreen(appViewModel = appViewModel, confirmTeamChecked =  {
-                                  //TODO Somehow this schould change the boolean in the viewmodel when the button on the next screen is pressed
-                                  appViewModel.team1Ready = true
+                              navigator.push(CheckPlayerAttendanceScreen(currentMatch.team1 , confirmTeamChecked =  {
+                                  currentMatch.team1Ready = true
                               }))
                     },
                     modifier = Modifier
@@ -62,13 +65,13 @@ class ChooseTeamScreen (private val appViewModel: AppViewModel):Screen {
                         .height(60.dp)
                         .pointerHoverIcon(icon = PointerIcon.Hand),
                 ){
-                    Text(text = appViewModel.currentMatch!!.team1.name)
+                    Text(text = currentMatch.team1.name)
                 }
                 Button(
-                    enabled = !appViewModel.team2Ready,
+                    enabled = !currentMatch.team2Ready,
                     onClick = {
-                        navigator.push(CheckPlayerAttendanceScreen(appViewModel = appViewModel, confirmTeamChecked =  {
-                            appViewModel.team2Ready = true
+                        navigator.push(CheckPlayerAttendanceScreen(currentMatch.team2, confirmTeamChecked =  {
+                            currentMatch.team2Ready = true
                         }))
                     },
                     modifier = Modifier
@@ -76,14 +79,14 @@ class ChooseTeamScreen (private val appViewModel: AppViewModel):Screen {
                         .height(60.dp)
                         .pointerHoverIcon(icon = PointerIcon.Hand)
                 ){
-                    Text(text = appViewModel.currentMatch!!.team2.name)
+                    Text(text = currentMatch.team2.name)
                 }
 
                 Button(
-                    colors = ButtonDefaults.buttonColors(backgroundColor = if (appViewModel.team1Ready && appViewModel.team2Ready) Color.Green else Color.Red),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = if (currentMatch.team1Ready && currentMatch.team2Ready) Color.Green else Color.Red),
                     onClick = {
-                        if (appViewModel.team1Ready && appViewModel.team2Ready){
-                            navigator.push((GameManager(appViewModel)))
+                        if (currentMatch.team1Ready && currentMatch.team2Ready){
+                            navigator.push((GameManager(currentMatch)))
                         } else {
                             alertBox.show()
                         }

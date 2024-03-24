@@ -1,6 +1,5 @@
 package screens.game_manager
 
-import AppViewModel
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,7 +38,6 @@ import ui_components.ScreenWithKeyInput
 
 class FoulScreen(
     val team: Team,
-    val appViewModel: AppViewModel
 ) : Screen {
     val alertBox = AlertBox("Choose a foul maker and how long the penalty should last")
 
@@ -67,7 +65,7 @@ class FoulScreen(
                     GenericDropdownMenu(
                         modifier = Modifier.height(56.dp).fillMaxWidth(),
                         iterable = team.members,
-                        value = if (player == null) {
+                        startingValue = if (player == null) {
                             "Choose who made a Foul"
                         } else {
                             "${player!!.firstName} ${player!!.name}, Number: ${player!!.playerNumber}"

@@ -5,7 +5,7 @@ import enums.Attendance
 data class Present(
     val match: Match = Match(),
     val player: Player = Player(),
-    val present: Attendance = Attendance.NONE
+    val present: Attendance? = null
 ){
 
 }

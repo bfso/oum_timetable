@@ -36,6 +36,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import data.Match
 import screens.ChooseMatchScreen
 import timer.Timer
 import timer.minutes
@@ -44,7 +45,7 @@ import ui_components.IncrementerWithDisplay
 
 
 class GameManager(
-    val appViewModel: AppViewModel
+    val currentMatch: Match
 ) : Screen {
 
     var timerRunning by mutableStateOf(false)
@@ -72,14 +73,11 @@ class GameManager(
             ) {
                 TeamArea(
                     label = "Heim",
-                    teamName = appViewModel.currentMatch?.team1?.name ?: "Error",
+                    teamName = currentMatch.team1.name,
                     onGoalButtonClick = { },
                     onPenaltyButtonClick = {
                         navigator.push(
-                            FoulScreen(
-                                team = appViewModel.currentMatch!!.team1,
-                                appViewModel = appViewModel
-                            )
+                            FoulScreen(team = currentMatch.team1)
                         )
                     },
                     onTimeoutButtonClick = { println("Heimteam Timeout Button funktionert") }
@@ -87,14 +85,11 @@ class GameManager(
                 ControlArea(navigator = navigator)
                 TeamArea(
                     label = "Gast",
-                    teamName = appViewModel.currentMatch?.team2?.name ?: "Error",
+                    teamName = currentMatch.team2.name,
                     onGoalButtonClick = { },
                     onPenaltyButtonClick = {
                         navigator.push(
-                            FoulScreen(
-                                team = appViewModel.currentMatch!!.team2,
-                                appViewModel = appViewModel
-                            )
+                            FoulScreen(team = currentMatch.team2)
                         )
                     },
                     onTimeoutButtonClick = { println("Gastteam Timeout Button funktionert") }
@@ -147,10 +142,8 @@ class GameManager(
                     modifier = Modifier.height(63.dp),
                     shape = CircleShape,
                     onClick = {
-                        appViewModel.currentMatch!!.finished = true
-                        appViewModel.currentMatch = null
-
-                        navigator.push(ChooseMatchScreen(appViewModel = appViewModel))
+                        currentMatch.finished = true
+                        navigator.push(ChooseMatchScreen())
                     }
                 ) {
                     Icon(imageVector = Icons.Filled.Done, contentDescription = null)
@@ -182,11 +175,11 @@ class GameManager(
 
     @Composable
     private fun RowScope.TeamArea(
-        label: String="",
+        label: String = "",
         teamName: String = "",
         onGoalButtonClick: () -> Unit = {},
-        onPenaltyButtonClick: () -> Unit={},
-        onTimeoutButtonClick: () -> Unit={},
+        onPenaltyButtonClick: () -> Unit = {},
+        onTimeoutButtonClick: () -> Unit = {},
         //timeoutTimer: Timer = Timer(format = "ss:SS", durationMillis = 30.seconds),
         timeoutAvailable: Boolean = true
     ) {

@@ -44,7 +44,8 @@ kotlin {
             implementation(libs.library.base)
             implementation(libs.retrofit)
             implementation(libs.converter.gson)
-            implementation (libs.androidx.compose.material.icons.extended)
+            implementation(libs.androidx.compose.material.icons.extended)
+            implementation(libs.koin.core)
 
         }
         desktopMain.dependencies {

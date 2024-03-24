@@ -1,6 +1,6 @@
 package screens.login
 
-object LocalLoginTest: Login {
+object LocalLoginTest: LoginService {
 
     private val testLoginData : Map<String,String> = mapOf(
         Pair("Ivo","test1234"),
@@ -12,7 +12,7 @@ object LocalLoginTest: Login {
 
 
     )
-    override fun login(username: String, password: String): Boolean {
+    override fun checkLogin(username: String, password: String): Boolean {
         return testLoginData[username] == password
     }
 }
