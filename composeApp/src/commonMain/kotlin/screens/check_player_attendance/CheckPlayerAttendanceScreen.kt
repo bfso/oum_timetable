@@ -29,6 +29,7 @@ import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -56,11 +57,11 @@ class CheckPlayerAttendanceScreen(
             ),
             modifier = Modifier.fillMaxSize()
         ) {
-            Column(modifier = Modifier.fillMaxSize()) {
-                Box (
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ){
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                     Button(onClick = {
                         confirmTeamChecked()
                         navigator.pop()
@@ -68,7 +69,9 @@ class CheckPlayerAttendanceScreen(
                     }) {
                         Text(text = "finished")
                     }
-                }
+
+
+                Text(text= team.name, fontSize = 40.sp, fontWeight = FontWeight.Black)
 
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(

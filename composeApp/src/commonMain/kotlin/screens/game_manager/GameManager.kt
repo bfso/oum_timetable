@@ -1,6 +1,5 @@
 package screens.game_manager
 
-import AppViewModel
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -48,9 +47,15 @@ class GameManager(
     val currentMatch: Match
 ) : Screen {
 
-    var timerRunning by mutableStateOf(false)
-    val timer: Timer = Timer(durationMillis = 20.minutes, onTimerFinish = { timerRunning = false })
-    val timeoutTimer: Timer = Timer(format = "ss:SS", durationMillis = 30.seconds)
+    //var timerRunning by mutableStateOf(false)
+    val timer: Timer = Timer(durationMillis = 20.minutes, onTimerFinish = { })
+    val team1Timer: Timer = Timer(format = "ss:SS",durationMillis = 30.seconds, onTimerFinish = { timeoutBlocked = false })
+    val team2Timer: Timer = Timer(format = "ss:SS",durationMillis = 30.seconds, onTimerFinish = { timeoutBlocked = false })
+
+    var team1TimeoutAvailable by mutableStateOf(true)
+    var team2TimeoutAvailable by mutableStateOf( true)
+    var timeoutBlocked by mutableStateOf( false)
+
 
 
     companion object {
@@ -74,25 +79,48 @@ class GameManager(
                 TeamArea(
                     label = "Heim",
                     teamName = currentMatch.team1.name,
-                    onGoalButtonClick = { },
+                    onGoalButtonClick = {
+
+                    },
                     onPenaltyButtonClick = {
                         navigator.push(
                             FoulScreen(team = currentMatch.team1)
                         )
                     },
-                    onTimeoutButtonClick = { println("Heimteam Timeout Button funktionert") }
+                    onTimeoutButtonClick = {
+                        if(!timeoutBlocked&&timer.isRunning){
+                            team1TimeoutAvailable = false
+                            team1Timer.start()
+                            timer.pause()
+                            timeoutBlocked = true
+                        }
+
+                    },
+                    timeoutTimer = team1Timer,
+                    timeoutAvailable = team1TimeoutAvailable
                 )
                 ControlArea(navigator = navigator)
                 TeamArea(
                     label = "Gast",
                     teamName = currentMatch.team2.name,
-                    onGoalButtonClick = { },
+                    onGoalButtonClick = {
+
+                    },
                     onPenaltyButtonClick = {
                         navigator.push(
                             FoulScreen(team = currentMatch.team2)
                         )
                     },
-                    onTimeoutButtonClick = { println("Gastteam Timeout Button funktionert") }
+                    onTimeoutButtonClick = {
+                        if(!timeoutBlocked&&timer.isRunning){
+                            team2TimeoutAvailable = false
+                            team2Timer.start()
+                            timer.pause()
+                            timeoutBlocked = true
+                        }
+                    },
+                    timeoutTimer = team2Timer,
+                    timeoutAvailable = team2TimeoutAvailable
                 )
             }
         }
@@ -124,13 +152,14 @@ class GameManager(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Button(
+                    enabled = !timeoutBlocked,
                     modifier = Modifier.height(63.dp),
                     shape = CircleShape,
                     onClick = {
-                        timerRunning = timer.toggleOnOff()
+                        timer.toggleOnOff()
                     }
                 ) {
-                    if (timerRunning) {
+                    if (timer.isRunning) {
                         Text("||", fontWeight = FontWeight(1000), fontSize = 20.sp)
                     } else {
                         Icon(imageVector = Icons.Filled.PlayArrow, contentDescription = null)
@@ -180,10 +209,11 @@ class GameManager(
         onGoalButtonClick: () -> Unit = {},
         onPenaltyButtonClick: () -> Unit = {},
         onTimeoutButtonClick: () -> Unit = {},
-        //timeoutTimer: Timer = Timer(format = "ss:SS", durationMillis = 30.seconds),
-        timeoutAvailable: Boolean = true
+        timeoutAvailable: Boolean,
+        timeoutTimer: Timer
     ) {
-
+        //var  timeoutAvailable: Boolean by  remember { mutableStateOf(true)}
+        //val  timeoutTimer: Timer by remember { mutableStateOf(Timer(format = "ss:SS", durationMillis = 30.seconds))}
         Column(
             modifier = Modifier.weight(1.25f).fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -255,6 +285,8 @@ class GameManager(
                 modifier = Modifier.width(120.dp),
                 onClick = {
                     onTimeoutButtonClick()
+                    //timeoutTimer.start()
+                    //timeoutAvailable = false
                 }
             ) {
                 Text(text = "Timeout")
