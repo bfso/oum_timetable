@@ -109,7 +109,7 @@ class GameManager(
                     teamNr = 2,
                     onGoalButtonClick = {
                         navigator.push(
-                            GoalScreen(team = currentMatch.team1, teamNr = 2, match = currentMatch)
+                            GoalScreen(team = currentMatch.team2, teamNr = 2, match = currentMatch)
                         )
                     },
                     onPenaltyButtonClick = {
