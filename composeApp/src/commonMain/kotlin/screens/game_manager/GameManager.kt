@@ -37,7 +37,6 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import data.Match
 import data.Player
-import pre_sets.FoulTimes
 import pre_sets.foulTimes
 import screens.ChooseMatchScreen
 import timer.Timer
@@ -53,7 +52,6 @@ class GameManager(
 
 ) : Screen {
 
-    //var timerRunning by mutableStateOf(false)
     val timer: Timer = Timer(durationMillis = 20.minutes, onTimerFinish = { })
     val team1Timer: Timer = Timer(format = "ss:SS",durationMillis = 30.seconds, onTimerFinish = { timeoutBlocked = false })
     val team2Timer: Timer = Timer(format = "ss:SS",durationMillis = 30.seconds, onTimerFinish = { timeoutBlocked = false })
@@ -62,13 +60,10 @@ class GameManager(
     var team2TimeoutAvailable by mutableStateOf( true)
     var timeoutBlocked by mutableStateOf( false)
 
-
-
     companion object {
         val containerColor: Color = Color.Blue.copy(alpha = 0.3f)
         val cornerRadius = 15.dp
     }
-
 
     @Composable
     override fun Content() {
@@ -218,8 +213,7 @@ class GameManager(
         timeoutAvailable: Boolean,
         timeoutTimer: Timer
     ) {
-        //var  timeoutAvailable: Boolean by  remember { mutableStateOf(true)}
-        //val  timeoutTimer: Timer by remember { mutableStateOf(Timer(format = "ss:SS", durationMillis = 30.seconds))}
+
         val penaltyData = mutableListOf(player.playerNumber, foulTimes)
         Column(
             modifier = Modifier.weight(1.25f).fillMaxSize(),
@@ -300,13 +294,10 @@ class GameManager(
                 modifier = Modifier.width(120.dp),
                 onClick = {
                     onTimeoutButtonClick()
-                    //timeoutTimer.start()
-                    //timeoutAvailable = false
                 }
             ) {
                 Text(text = "Timeout")
             }
-            Text(text = foulTimes.toString())
             if (timeoutTimer.isRunning) {
                 Box(
                     modifier = Modifier
