@@ -29,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.input.key.Key
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import data.Match
 import data.Player
 import pre_sets.foulTimes
 import ui_components.AlertBox
@@ -38,6 +39,8 @@ import ui_components.ScreenWithKeyInput
 
 class GoalScreen(
     val team: Team,
+    val teamNr: Int,
+    val match: Match,
 ) : Screen {
     val alertBox = AlertBox("Choose a goal maker")
 
@@ -99,6 +102,11 @@ class GoalScreen(
                                 if (playerGoal == null) {
                                     alertBox.show()
                                 } else {
+                                    if (teamNr == 1){
+                                        match.team1Goals++
+                                    }else{
+                                        match.team2Goals++
+                                    }
                                     navigator.pop()
                                 }
                             },

@@ -79,9 +79,10 @@ class GameManager(
                 TeamArea(
                     label = "Heim",
                     teamName = currentMatch.team1.name,
+                    teamNr = 1,
                     onGoalButtonClick = {
                         navigator.push(
-                            GoalScreen(team = currentMatch.team1)
+                            GoalScreen(team = currentMatch.team1, teamNr = 1, match = currentMatch)
                         )
                     },
                     onPenaltyButtonClick = {
@@ -105,9 +106,10 @@ class GameManager(
                 TeamArea(
                     label = "Gast",
                     teamName = currentMatch.team2.name,
+                    teamNr = 2,
                     onGoalButtonClick = {
                         navigator.push(
-                            GoalScreen(team = currentMatch.team1)
+                            GoalScreen(team = currentMatch.team1, teamNr = 2, match = currentMatch)
                         )
                     },
                     onPenaltyButtonClick = {
@@ -210,6 +212,7 @@ class GameManager(
     private fun RowScope.TeamArea(
         label: String = "",
         teamName: String = "",
+        teamNr: Int,
         onGoalButtonClick: () -> Unit = {},
         onPenaltyButtonClick: () -> Unit = {},
         onTimeoutButtonClick: () -> Unit = {},
@@ -246,14 +249,11 @@ class GameManager(
                 ),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                var goalCounter by remember { mutableStateOf(0) }
-
                 // Button (Goal)
                 Button(
                     modifier = Modifier.width(120.dp),
                     onClick = {
                         onGoalButtonClick()
-                        goalCounter++
                     }
                 ) {
                     Text(text = "Goal")
@@ -269,7 +269,7 @@ class GameManager(
                         ),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "$goalCounter", fontSize = 15.sp)
+                    Text(text = if(teamNr == 1){currentMatch.team1Goals.toString()}else{currentMatch.team2Goals.toString()}, fontSize = 15.sp)
                 }
             }
 
