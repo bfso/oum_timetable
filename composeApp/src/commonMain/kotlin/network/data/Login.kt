@@ -1,6 +1,6 @@
-package network
+package network.data
 
 data class Login(
     val email:String = "beispiel@email.com",
-    val password:String =  "Passwort123"
+    val password:String =  "passwort123"
 )

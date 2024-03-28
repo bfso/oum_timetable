@@ -1,7 +1,9 @@
 package screens.login
 
+import network.ApiService
+
 object ApiLogin: LoginService {
-    override fun checkLogin(username: String, password: String): Boolean {
-        TODO("Not yet implemented")
+    override fun checkLogin(email: String, password: String): Boolean {
+        return ApiService().login(email, password)
     }
 }

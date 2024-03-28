@@ -1,4 +1,4 @@
-package network
+package network.data
 
 data class LoginFailed(
     val message:String = "",

@@ -1,11 +1,16 @@
 package network
 
+import kotlinx.coroutines.runBlocking
+import network.data.Login
+
 class ApiService {
-    val BASE_URL = "10.5.43.18:8000"
-    //val retrofit = TODO()
-    //@Post("/api/login")
-    //fun login(username:String,password:String):Boolean{
-    //    retrofit.login(Login(email = "aöshfdoa", password = "aoshdöfoi"))
-    //    return true
-    //}
+    val retrofit = RetrofitHelper.getInstance()
+    fun login(email:String, password:String):Boolean{
+        val api = retrofit.create(ApiInterface::class.java)
+        var responseSuccess:Boolean
+        runBlocking{
+            responseSuccess =  api.login(Login(email = email, password = password)).code() == 200
+        }
+        return responseSuccess
+    }
 }

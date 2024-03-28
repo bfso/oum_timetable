@@ -12,7 +12,7 @@ object LocalLoginTest: LoginService {
 
 
     )
-    override fun checkLogin(username: String, password: String): Boolean {
-        return testLoginData[username] == password
+    override fun checkLogin(email: String, password: String): Boolean {
+        return testLoginData[email] == password
     }
 }

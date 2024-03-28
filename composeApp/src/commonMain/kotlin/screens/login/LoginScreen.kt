@@ -34,11 +34,8 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import data.DataTest
-import screens.ChooseMatchScreen
-import ui_components.AlertBox
 import ui_components.ScreenWithKeyInput
 
 class LoginScreen(
@@ -78,8 +75,8 @@ class LoginScreen(
                     TextField(
                         singleLine = true,
                         modifier = Modifier.fillMaxWidth(),
-                        onValueChange = { loginScreenModel.username = it },
-                        value = loginScreenModel.username,
+                        onValueChange = { loginScreenModel.email = it },
+                        value = loginScreenModel.email,
                         label = { Text(text = "Username") })
                     Spacer(Modifier.height(10.dp))
                     TextField(
