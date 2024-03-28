@@ -31,6 +31,9 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import data.Match
+import data.Player
+import pre_sets.FoulTimes
+import pre_sets.foulTimes
 import screens.check_player_attendance.CheckPlayerAttendanceScreen
 import screens.game_manager.GameManager
 import ui_components.AlertBox
@@ -86,7 +89,7 @@ class ChooseTeamScreen(val currentMatch: Match):Screen {
                     colors = ButtonDefaults.buttonColors(backgroundColor = if (currentMatch.team1Ready && currentMatch.team2Ready) Color.Green else Color.Red),
                     onClick = {
                         if (currentMatch.team1Ready && currentMatch.team2Ready){
-                            navigator.push((GameManager(currentMatch)))
+                            navigator.push((GameManager(currentMatch, player = Player())))
                         } else {
                             alertBox.show()
                         }

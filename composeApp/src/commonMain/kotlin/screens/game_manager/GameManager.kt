@@ -36,6 +36,9 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import data.Match
+import data.Player
+import pre_sets.FoulTimes
+import pre_sets.foulTimes
 import screens.ChooseMatchScreen
 import timer.Timer
 import timer.minutes
@@ -44,7 +47,10 @@ import ui_components.IncrementerWithDisplay
 
 
 class GameManager(
-    val currentMatch: Match
+    val currentMatch: Match,
+    val player: Player
+
+
 ) : Screen {
 
     //var timerRunning by mutableStateOf(false)
@@ -214,6 +220,7 @@ class GameManager(
     ) {
         //var  timeoutAvailable: Boolean by  remember { mutableStateOf(true)}
         //val  timeoutTimer: Timer by remember { mutableStateOf(Timer(format = "ss:SS", durationMillis = 30.seconds))}
+        val penaltyData = mutableListOf(player.playerNumber, foulTimes)
         Column(
             modifier = Modifier.weight(1.25f).fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -277,7 +284,15 @@ class GameManager(
                 Text(text = "Strafe")
             }
 
-            // TODO Strafanzeige als Kreis (Kreis ist ausgefüllt falls Strafe läuft)
+            // TODO Daten aus Foulscreen importieren
+            Box(modifier = Modifier.
+                fillMaxWidth(0.9f)
+                .background(
+                    color = containerColor,
+                    shape = RoundedCornerShape(cornerRadius)
+                )){
+                Text(text = penaltyData.joinToString { "" }, fontSize = 30.sp)
+            }
 
             // Button (Timeout)
             Button(
@@ -291,6 +306,7 @@ class GameManager(
             ) {
                 Text(text = "Timeout")
             }
+            Text(text = foulTimes.toString())
             if (timeoutTimer.isRunning) {
                 Box(
                     modifier = Modifier
@@ -305,12 +321,6 @@ class GameManager(
                 }
 
             }
-
-
-            // TODO Strafanzeige als Kreis (Kreis ist ausgefüllt falls Strafe läuft)
-            //...
-
-
         }
     }
 
