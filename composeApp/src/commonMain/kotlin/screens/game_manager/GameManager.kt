@@ -80,7 +80,9 @@ class GameManager(
                     label = "Heim",
                     teamName = currentMatch.team1.name,
                     onGoalButtonClick = {
-
+                        navigator.push(
+                            GoalScreen(team = currentMatch.team1)
+                        )
                     },
                     onPenaltyButtonClick = {
                         navigator.push(
@@ -104,7 +106,9 @@ class GameManager(
                     label = "Gast",
                     teamName = currentMatch.team2.name,
                     onGoalButtonClick = {
-
+                        navigator.push(
+                            GoalScreen(team = currentMatch.team1)
+                        )
                     },
                     onPenaltyButtonClick = {
                         navigator.push(
